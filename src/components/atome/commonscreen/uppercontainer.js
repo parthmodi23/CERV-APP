@@ -1,6 +1,7 @@
 import React from 'react'
-import {View,Text,StyleSheet} from "react-native"
+import {View,Text,StyleSheet, Dimensions} from "react-native"
 
+const {width,height}=Dimensions.get('window')
 
 const UpperComponent = ({children,style}) => {
   return (
@@ -13,7 +14,7 @@ const UpperComponent = ({children,style}) => {
 
 const styles=StyleSheet.create({
     uppercontainer:{
-        height:'30%',
+        height:height*0.3,
     }
 })
 export default UpperComponent

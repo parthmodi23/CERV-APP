@@ -1,5 +1,7 @@
 import React from 'react'
-import { StyleSheet, Text, View } from 'react-native'
+import { Dimensions, StyleSheet, Text, View } from 'react-native'
+
+const {width,height}=Dimensions.get('window')
 
 const LowerComponent = ({children,style}) => {
   return (
@@ -11,7 +13,8 @@ const LowerComponent = ({children,style}) => {
 
 const styles=StyleSheet.create({
         lowercontainer: {
-            height: '70%',
+            height:height*0.7,
+            width:width,
             backgroundColor: '#ffffff',
             borderTopRightRadius: 40,
             borderTopLeftRadius: 40,
