@@ -1,25 +1,21 @@
 import React, { useEffect } from 'react'
-import Loginform from '../../components/molecules/auth/loginform';
-import { View ,StyleSheet} from 'react-native';
+import Loginform from '../../components/organisum/loginform';
+import { View, StyleSheet } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 const Login = (props) => {
-  const navigation=useNavigation()
-
-  // useEffect(()=>{
-  //   navigation.setOptions({
-  //     headerLeft: () => <MaterialCommunityIcos onPress={() => navigation.goBack()} name='back'  color='black' size={24}/>
-  // });
+  const navigation = useNavigation()
   return (
     <View style={styles.container}>
-        <Loginform/>
+      <Loginform />
     </View>
   )
 }
 
-const styles=StyleSheet.create({
-  container:{
-    flex:1
+const styles = StyleSheet.create({
+  container: {
+    flex: 1
   }
 })
 export default Login

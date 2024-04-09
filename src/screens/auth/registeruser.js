@@ -5,7 +5,7 @@ import { View } from 'react-native'
 const RegisterUserScreen = () => {
   return (
     <View>
-    <RegisterUser/>
+      <RegisterUser />
     </View>
   )
 }

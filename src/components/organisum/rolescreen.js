@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { Image, View, Text, StyleSheet, Dimensions } from 'react-native'
 import { TouchableOpacity } from 'react-native-gesture-handler'
-import CustomButton from '../atome/buttoncomponent/button'
+import CustomButton from '../atoms/buttoncomponent/button'
 import colors from '../../constants/colors'
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { useNavigation } from '@react-navigation/native'
@@ -87,7 +87,7 @@ const styles = StyleSheet.create({
         flex: 1,
     },
     imagecontainer: {
-        width: wp(40),
+        width: wp(42),
         height: hp(20),
         borderRadius: hp(20),
         borderWidth: 3,
@@ -97,7 +97,7 @@ const styles = StyleSheet.create({
     },
 
     outerline: {
-        width: wp(30),
+        width: wp(32),
         height: hp(15),
         borderWidth: 2,
         borderRadius: hp(50),

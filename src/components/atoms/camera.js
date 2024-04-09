@@ -3,13 +3,12 @@ import React, { useState } from 'react'
 import { View, TouchableOpacity, Text, Alert, Image, StyleSheet } from 'react-native'
 import colors from '../../constants/colors'
 
-const Camera = () => {
+const Camera = ({screen,imageoutercontainer,forimage,button}) => {
     const [imageuri, setImageuri] = useState()
     const [cameraPermissionInformation, requestPermission] = useCameraPermissions();
     const verifyPermission = async () => {
         if (cameraPermissionInformation.status === PermissionStatus.UNDETERMINED) {
             const PermissionResponse = await requestPermission();
-
             return PermissionResponse.granted;
         }
 
@@ -37,11 +36,11 @@ const Camera = () => {
     }
 
     return (
-        <View style={styles.mainscreen}>
-            <View style={styles.imagecontainer}>
-                {imageuri ? <Image source={{ uri: imageuri }} style={styles.image} /> : <Image style={styles.image} source={require('../../assests/images/defaultuser.png')} />}
+        <View style={[styles.mainscreen,screen]}>
+            <View style={[styles.imagecontainer,imageoutercontainer]}>
+                {imageuri ? <Image source={{ uri: imageuri }} style={[styles.image,forimage]} /> : <Image style={[styles.image,forimage]} source={require('../../assests/images/defaultuser.png')} />}
             </View>
-            <TouchableOpacity style={styles.addbutton} onPress={takePhoto}>
+            <TouchableOpacity style={[styles.addbutton,button]} onPress={takePhoto}>
                 <Text style={styles.plusbutton}>+</Text>
             </TouchableOpacity>
             <View>

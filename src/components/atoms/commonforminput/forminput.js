@@ -72,6 +72,7 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////
 import React from 'react'
 import { TextInput,View,Text,Button,StyleSheet, Dimensions } from 'react-native'
+import { Ionicons } from '@expo/vector-icons';
 
 import { AntDesign, MaterialCommunityIcons } from '@expo/vector-icons';
 import { TouchableOpacity } from 'react-native-gesture-handler';
@@ -79,7 +80,7 @@ import { Icon } from 'react-native-paper';
 
 const windowWidth = Dimensions.get('window').width;
 
-const FormInput = ({onChange,onBlur,values,placeholder,sideicon,headingname,secureTextEntry,keyboardType,children,passwordeye,iconname}) => {
+const FormInput = ({onChange,onBlur,values,placeholder,oniconpressed,sideicon,headingname,secureTextEntry,keyboardType,children,passwordeye,iconname,sideiconsecond}) => {
     return (
             <View>
              <Text style={styles.headingtext}>{headingname}</Text>
@@ -96,6 +97,7 @@ const FormInput = ({onChange,onBlur,values,placeholder,sideicon,headingname,secu
                 />
             <TouchableOpacity onPress={passwordeye} style={styles.passwordeye}>
             <MaterialCommunityIcons  size={24} name={sideicon} color='#f5694e' />
+            {/* <Ionicons onPress={oniconpressed} name={sideiconsecond} size={24} color='#f5694e'/> */}
             </TouchableOpacity>
             </View>
             </View>

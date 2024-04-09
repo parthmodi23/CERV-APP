@@ -5,24 +5,39 @@ import { GestureHandlerRootView, NativeViewGestureHandler } from 'react-native-g
 import MainNavigator from './src/navigation/navigation';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 import colors from './src/constants/colors';
+import {thunk} from  'redux-thunk';
+import auth from './src/redux/reducer/auth'
+import { combineReducers, createStore ,applyMiddleware} from 'redux';
+import logger from 'redux-logger';
+import { Provider } from 'react-redux';
+import verifyotp from './src/redux/reducer/verifyotp';
 
+// // Combine reducers
+const rootReducer = combineReducers({
+  auth:auth,
+  verifyotp:verifyotp,
+});
+
+// Create Redux store
+const store = createStore(rootReducer, applyMiddleware(thunk,logger)); // Apply logger middleware and thunk also
 
 
 export default function App() {
 
   return (
     <View style={styles.container}>
-      <SafeAreaView style={{flex:1,backgroundColor:colors.CERVmaincolor}}>    
-        <GestureHandlerRootView style={{flex:1}}>
-    <NavigationContainer>
-      <MainNavigator/>
-    </NavigationContainer>
-    
-    </GestureHandlerRootView> 
-    </SafeAreaView>
+      <SafeAreaView style={{ flex: 1, backgroundColor: colors.CERVmaincolor }}>
+        <GestureHandlerRootView style={{ flex: 1 }}>
+          <Provider store={store}>
+            <NavigationContainer>
+              <MainNavigator />
+            </NavigationContainer>
+          </Provider>
+        </GestureHandlerRootView>
+      </SafeAreaView>
 
 
- 
+
     </View>
   );
 }
@@ -31,7 +46,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#ffff',
-   
+
   },
 });
 

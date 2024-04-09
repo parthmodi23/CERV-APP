@@ -5,7 +5,7 @@ import { View } from 'react-native'
 const Otpscreen = () => {
   return (
     <View>
-        <Otpvalidatedscreen/>
+      <Otpvalidatedscreen />
     </View>
   )
 }
