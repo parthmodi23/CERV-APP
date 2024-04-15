@@ -1,5 +1,6 @@
 import React from 'react'
 import { Dimensions, StyleSheet, Text, View } from 'react-native'
+import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 
 const { width, height } = Dimensions.get('window')
 
@@ -13,13 +14,13 @@ const LowerComponent = ({ children, style }) => {
 
 const styles = StyleSheet.create({
   lowercontainer: {
-    height: height * 0.7,
-    width: width,
+    height: hp(70),
     backgroundColor: '#ffffff',
     borderTopRightRadius: 40,
     borderTopLeftRadius: 40,
-    paddingHorizontal: 10,
-    paddingTop: 10
+    paddingHorizontal:10,
+    paddingTop: 10,
+    
   },
 
 })

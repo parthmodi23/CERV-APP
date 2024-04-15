@@ -1,9 +1,15 @@
+import { confirmPasswordReset } from "firebase/auth";
+
 export const SEND_NUMBER='SEND_NUMBER'
 export const VERIFY_OTP='VERIFY_OTP'
+export const RESEND_OTP='RESEND_OTP'
+
+
 //here sendotp==sendphonennumber
 export const sendotp = (phonenumber, countrycode) => {
 
     console.log(phonenumber,countrycode)
+    try{
     return async (dispatch) => {
       const response = await fetch(
         `https://cerv-project.onrender.com/api/v1/auth/send-otp`,
@@ -41,13 +47,17 @@ export const sendotp = (phonenumber, countrycode) => {
         phonenumber:phonenumber
      }
       });
+      return resData
+    }}
+    catch(error){
+      console.log(error)
+      return error
     }
   };
 
 
-  export const verifyotp = (otp, orderid,countrycode,phonenumber) => {
-
-    console.log(phonenumber,countrycode)
+  export const verifyotp = (otpData) => {
+    try{ 
     return async (dispatch) => {
       const response = await fetch(
         `https://cerv-project.onrender.com/api/v1/auth/verify-otp`,
@@ -57,26 +67,14 @@ export const sendotp = (phonenumber, countrycode) => {
             'Content-Type': 'application/json'
           },
           body: JSON.stringify({
-            otp:otp,
-            orderId:orderid,
-            country_code:countrycode,
-            phone_no:phonenumber
-            // returnSecureToken: true
+            otp:Number(otpData.otp),
+            orderId:otpData.orderid,
+            country_code:otpData.countrycode,
+            phone_no:otpData.phonenumber,
+            returnSecureToken: true
           })
         }
       );
-
-      if (!response.ok) {
-        const errorResData = await response.json();
-        const errorId = errorResData.error.message;
-        let message = 'Something went wrong!!';
-        if (errorId === 'EMAIL_NOT_FOUND') {
-          message = 'This email could not be found!';
-        } else if (errorId === 'INVALID_PASSWORD') {
-          message = 'This password is not valid!';
-        }
-        throw new Error(message);
-      }
 
       const resData = await response.json();
       console.log("otpresponse",resData)
@@ -86,6 +84,47 @@ export const sendotp = (phonenumber, countrycode) => {
         message:resData.message,
         isVerify:resData.isVerify
      }
-      });
+      });  
+      return resData
+    } }
+    catch(error){
+      console.log(error)
+      return error
     }
   };
+
+  
+  export const resendotp = (otporderid) => {
+    console.log(otporderid);
+    try {
+      return async (dispatch) => {
+        const response = await fetch(
+          `https://cerv-project.onrender.com/api/v1/auth/resend-otp`,
+          {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              orderId: String(otporderid),
+            }),
+          }
+        );
+  
+        if (!response.ok) {
+          const errorResData = await response.json();
+          const errorMessage = errorResData.message || 'Failed to resend OTP';
+          throw new Error(errorMessage);
+        }
+  
+        const resData = await response.json();
+        console.log("resendotpresponse", resData);
+        dispatch({ type: 'RESEND_OTP', payload: { message: resData.message } });
+        return resData;
+      };
+    } catch (error) {
+      console.error("resend otp error:", error);
+      return { error: error.message || 'Error resending OTP' }; 
+    }
+  };
+  

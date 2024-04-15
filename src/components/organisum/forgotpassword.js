@@ -5,60 +5,81 @@ import CustomButton from '../atoms/buttoncomponent/button'
 import FormInput from '../atoms/commonforminput/forminput'
 import colors from '../../constants/colors'
 import { Dimensions, Image, KeyboardAvoidingView, ScrollView, StyleSheet, Text, View } from 'react-native'
-
-const {width,height}=Dimensions.get('window')
-
+import { Formik } from 'formik'
+import * as Yup from 'yup' // Import Yup for schema validation
+import * as authActions from '../../redux/actions/auth'
+const { width, height } = Dimensions.get('window')
+import { useSelector,useDispatch } from 'react-redux'
 const Forgotpassword = () => {
-  return (
-   <View style={styles.mainscreen}>
-     <UpperComponent>
+
+    const dispatch=useDispatch()
+    return (
+        <View style={styles.mainscreen}>
+            <UpperComponent>
                 <View style={styles.uppercontainer}>
                     <View style={styles.uppertextcomponent}>
 
                         <Text style={styles.phonenumbertext}>Forgot Password</Text>
-                        <Text style={styles.subtext}>{`Reset your Password\nimmeditely`}</Text>
+                        <Text style={styles.subtext}>{`Reset your Password\nimmediately`}</Text>
 
                     </View>
                     <View style={styles.iconcontainer}>
                         <Image style={styles.imagepng} source={require('../../assests/images/loginpagepng.png')} />
                     </View>
                 </View>
-
-
             </UpperComponent>
-           
-                <LowerComponent>
-                <ScrollView accessible>
-
-                <KeyboardAvoidingView style={{}} behavior='padding' enabled >
-                    <View style={styles.textcomponent}>
-                        <Text style={styles.text}>{`Please enter the email address below,you\nwill receive a link to create a new password\nvia email`}</Text>
-                    </View>
-                    <View style={styles.phonenumbercontainer}>
-
-                           <FormInput
-                           placeholder={"Email id"}
-                           headingname={"Email"}
-                           iconname={"email"}
-                           onChange={""}
-                           onBlur={""}
-                           keyboardType={'email-address'}
-
-                           />
-                        <CustomButton style={styles.submitbutton} onPress={() =>{console.log("submit")}} title={'Submit'} />
-                    </View>
-
-            </KeyboardAvoidingView>
-            </ScrollView>
-
-
-                </LowerComponent>
-                
-   </View>
-  )
+            <LowerComponent>
+                <ScrollView>
+                    <KeyboardAvoidingView style={{}} behavior='padding' enabled >
+                        <View style={styles.textcomponent}>
+                            <Text style={styles.text}>{`Please enter the email address below, you\nwill receive a link to create a new password\nvia email`}</Text>
+                        </View>
+                        <View style={styles.phonenumbercontainer}>
+                            <Formik
+                                initialValues={{
+                                    email: ''
+                                }}
+                                validationSchema={Yup.object().shape({
+                                    email: Yup.string().email('Invalid Email id').required('Email id is required'),
+                                })}
+                                onSubmit={values => {
+                                    console.log(values)
+                                    // Handle form submission
+                                    const userinputmail = {
+                                        email: values.email, 
+                                    }
+                                    // Dispatch action or navigate to login screen
+                                    dispatch(authActions.forgotpassword(userinputmail))
+                                    // navigation.navigate('login')
+                                    console.log('Form submitted with values:', values);
+                                }}
+                            >
+                                {({ handleChange, handleBlur, values, handleSubmit, errors, touched }) => (
+                                    <View>
+                                        <FormInput
+                                            headingname={"Email"}
+                                            iconname={'email'}
+                                            placeholder={'Email address'}
+                                            onChange={handleChange('email')}
+                                            onBlur={handleBlur('email')}
+                                            value={values.email}
+                                        />
+                                        {touched.email && errors.email &&
+                                            <Text style={{ color: 'red' }}>{errors.email}</Text>
+                                        }
+                                        <CustomButton style={styles.submitbutton} onPress={handleSubmit} title={'Submit'} />
+                                    </View>
+                                )}
+                            </Formik>
+                        </View>
+                    </KeyboardAvoidingView>
+                </ScrollView>
+            </LowerComponent>
+        </View>
+    )
 }
 
-const styles=StyleSheet.create({
+const styles = StyleSheet.create({
 
     mainscreen: {
         backgroundColor: colors.CERVmaincolor

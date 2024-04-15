@@ -4,32 +4,47 @@ import { View, StyleSheet, Text, Image, Dimensions, Alert, KeyboardAvoidingView 
 import colors from '../../constants/colors'
 import PhoneInput from 'react-native-phone-number-input'
 import CustomButton from '../atoms/buttoncomponent/button'
-import { useNavigation,useRoute } from '@react-navigation/native'
+import { useNavigation, useRoute } from '@react-navigation/native'
 import { MaterialCommunityIcons } from '@expo/vector-icons'
 import UpperComponent from '../atoms/commonscreen/uppercontainer'
 import LowerComponent from '../atoms/commonscreen/lowercomponent'
-import { useDispatch,useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import * as otpAction from '../../redux/actions/verifyotp'
+import * as authAction from '../../redux/actions/auth'
 const { width, height } = Dimensions.get('window')
 
 const Phonenumberscreen = () => {
     const [phonenumber, setPhonenumber] = useState('')
     const navigation = useNavigation(); // Use useNavigation hook to get navigation object
-    const route=useRoute()
-    const dispatch=useDispatch()
-    // const selector=useSelector()
-    const role=route.params?.role
+    const route = useRoute()
+    const dispatch = useDispatch()
+    const userdata = useSelector(state => state.auth.userdata)
+    console.log("userdata data for phone number", userdata);
+    const role = route.params?.params
+    const userrole = role.role
+    const formdata = role.formdata
     const handlephonenumber = (number) => {
         //with country code 13 with + sign
         if (number.length < 13) {
             Alert.alert("Alert!", "Please enter the valid number")
         } else {
-                dispatch(otpAction.sendotp(number.substring(3,13),number.substring(1,3)))
-                navigation.navigate('otpscreen',{
-                    userphonenumber: number.substring(3,13),
-                    countycode: number.substring(0,2),
-                    role:role
-                })
+            const usernumberdata = {
+                phone_no: number.substring(3, 13),
+                country_code: number.substring(1, 3)
+            }
+            userwithnumber = { ...userdata, ...usernumberdata }
+            dispatch(authAction.saveuserdata(userwithnumber))
+            dispatch(otpAction.sendotp(number.substring(3, 13), number.substring(1, 3)))
+
+            navigation.navigate('otpscreen', {
+                userdata: {
+                    userphonenumber: number.substring(3, 13),
+                    countycode: number.substring(1, 3),
+                    role: userrole,
+                    formdata: formdata
+
+                }
+            })
         }
     }
     return (
@@ -40,7 +55,6 @@ const Phonenumberscreen = () => {
 
                         <Text style={styles.phonenumbertext}>Phone Number</Text>
                         <Text style={styles.subtext}>{`verify your phone number \nfor extra security`}</Text>
-
                     </View>
                     <View style={styles.iconcontainer}>
                         <Image style={styles.imagepng} source={require('../../assests/images/loginpagepng.png')} />
@@ -57,12 +71,13 @@ const Phonenumberscreen = () => {
                     <View style={styles.phonenumbercontainer}>
 
                         <Text style={styles.phonetext}>Phone Number</Text>
-                        <View>
+                        <View style={{backgroundColor:'',}}>
                             <PhoneInput
+                            style={{backgroundColor:'orange',height:200}}
                                 defaultValue={phonenumber}
                                 onChangeFormattedText={(text) => setPhonenumber(text)}
                                 defaultCode='IN'
-                                containerStyle={styles.phonenumber}
+                                containerStyle={{backgroundColor:''}}
                                 textInputProps={{ maxLength: 10 }}
                                 textContainerStyle={{}}
                                 countryPickerButtonStyle={{}}

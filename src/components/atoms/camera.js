@@ -2,10 +2,12 @@ import { launchCameraAsync, useCameraPermissions } from 'expo-image-picker'
 import React, { useState } from 'react'
 import { View, TouchableOpacity, Text, Alert, Image, StyleSheet } from 'react-native'
 import colors from '../../constants/colors'
-
-const Camera = ({screen,imageoutercontainer,forimage,button}) => {
+import {useDispatch,useSelector} from 'react-redux'
+import * as authAction from '../../redux/actions/auth'
+const Camera = ({screen,imageoutercontainer,forimage,button,showButton,myimageurl}) => {
     const [imageuri, setImageuri] = useState()
     const [cameraPermissionInformation, requestPermission] = useCameraPermissions();
+    const  dispatch=useDispatch()
     const verifyPermission = async () => {
         if (cameraPermissionInformation.status === PermissionStatus.UNDETERMINED) {
             const PermissionResponse = await requestPermission();
@@ -29,20 +31,24 @@ const Camera = ({screen,imageoutercontainer,forimage,button}) => {
 
         const image = await launchCameraAsync({
             allowsEditing: true,
-            aspect: [16, 9],
+            aspect: [4, 4],
             quality: 0.5
         });
-        setImageuri(image.assets[0].uri)
+        
+        const imagepath=image.assets[0].uri
+        setImageuri(imagepath)
+        dispatch(authAction.storeprofilepicturepath(imagepath))
     }
 
     return (
         <View style={[styles.mainscreen,screen]}>
+            { console.log("image props url",myimageurl)}
             <View style={[styles.imagecontainer,imageoutercontainer]}>
-                {imageuri ? <Image source={{ uri: imageuri }} style={[styles.image,forimage]} /> : <Image style={[styles.image,forimage]} source={require('../../assests/images/defaultuser.png')} />}
+                {imageuri || myimageurl ? <Image source={{ uri: imageuri||myimageurl }} style={[styles.image,forimage]} /> : <Image style={[styles.image,forimage]} source={require('../../assests/images/defaultuser.png')} />}
             </View>
-            <TouchableOpacity style={[styles.addbutton,button]} onPress={takePhoto}>
+           {showButton && <TouchableOpacity style={[styles.addbutton,button]} onPress={takePhoto}>
                 <Text style={styles.plusbutton}>+</Text>
-            </TouchableOpacity>
+            </TouchableOpacity>}
             <View>
             </View>
         </View>

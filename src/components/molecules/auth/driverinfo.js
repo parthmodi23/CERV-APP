@@ -5,7 +5,7 @@ import Camera from '../../atoms/camera'
 import colors from '../../../constants/colors'
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 
-const Driverinfo = () => {
+const Driverinfo = (props) => {
   return (
    <View>
       <View style={styles.mainscreen}>

@@ -1,18 +1,21 @@
 
-
 const initialState = {
+    userdata:null,
     user:null,
     role:null,
-    token:null,
-    success:false
+    success:false,
+    message:null,
+    registerusersuccess:false,
+    userselectedrole:null,
+    profilefilepath:null,
+    passwordchangesuccess:false
 }
 
 export default (state=initialState, action) => {
     switch (action.type) {
         case 'SIGNUP':
-            console.log(action.token)
             return {
-                token: action.payload.token,
+                ...state,
                 user: action.payload.user,
                 role: action.payload.role,
                 success:false
@@ -20,18 +23,47 @@ export default (state=initialState, action) => {
 
         case 'LOGIN':
             return{
-                token: action.payload.token,
+                ...state,
                 user: action.payload.user,
                 role: action.payload.role,
+                message:action.payload.message,
                 success:false 
             }
 
         case 'REGISTER':
                 return{
                    ...state,
-                   success:action.payload.success
+                   registerusersuccess:action.payload.success
                 }
 
+        case 'SAVEUSERDATA':
+            return {
+                ...state,
+                userdata:action.payload.userdata
+            }
+
+        case 'FORGOTPASSWORD':
+            return{
+                ...state,
+                success:action.payload.success,
+                message:action.payload.message
+            }
+
+        case 'STOREUSERROLEFRONTEND':
+            return{
+                ...state,
+                userselectedrole:action.payload.role
+            }
+        case 'PROFILEPICTUREPATH':
+            return{
+                ...state,
+                profilefilepath:action.payload.filepath
+            }
+            case 'CHNAGEPASSWORD':
+                return{
+                    ...state,
+                    password:action.payload.passwordchangesuccess
+                }
         default:
             return state;
     }

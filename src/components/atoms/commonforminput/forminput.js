@@ -80,12 +80,13 @@ import { Icon } from 'react-native-paper';
 
 const windowWidth = Dimensions.get('window').width;
 
-const FormInput = ({onChange,onBlur,values,placeholder,oniconpressed,sideicon,headingname,secureTextEntry,keyboardType,children,passwordeye,iconname,sideiconsecond}) => {
+const FormInput = ({onChange,onBlur,values,placeholder,oniconpressed,sideicon,showicon,headingname,secureTextEntry,keyboardType,children,passwordeye,iconname,sideiconsecond}) => {
     return (
             <View>
              <Text style={styles.headingtext}>{headingname}</Text>
             <View style={styles.emailpasscomponent}>
-             <MaterialCommunityIcons style={styles.icon} size={24} name={iconname} color='#f5694e' />
+                <View style={{flexDirection:'row',alignItems:'center',flex:1}}>
+            <MaterialCommunityIcons style={styles.icon} size={22} name={iconname} color='#f5694e' />
                 <TextInput style={styles.inputfeild}
                     onChangeText={onChange} 
                     onBlur={onBlur}
@@ -94,7 +95,7 @@ const FormInput = ({onChange,onBlur,values,placeholder,oniconpressed,sideicon,he
                     secureTextEntry={secureTextEntry}
                     keyboardType={keyboardType}
                     {...children}
-                />
+                /></View>
             <TouchableOpacity onPress={passwordeye} style={styles.passwordeye}>
             <MaterialCommunityIcons  size={24} name={sideicon} color='#f5694e' />
             {/* <Ionicons onPress={oniconpressed} name={sideiconsecond} size={24} color='#f5694e'/> */}
@@ -113,13 +114,15 @@ const styles=StyleSheet.create({
             borderBottomColor: 'black',
             alignItems: 'center', // Center items vertically
             borderBottomWidth: 2,
+            // flex:1
     },
     inputfeild:{
         // borderBottomWidth:2,
-        width:windowWidth*0.8,
+        flex:1,
+        marginHorizontal:5
     },
     icon:{
-        marginRight:5,
+        // marginRight:5,
     },
     headingtext: {
         marginVertical: 10,
@@ -128,7 +131,6 @@ const styles=StyleSheet.create({
         fontWeight:'bold'
       },
       passwordeye:{
-
         // paddingHorizontal: 10,
       },
 })

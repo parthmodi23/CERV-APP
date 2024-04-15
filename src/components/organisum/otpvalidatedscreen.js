@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react'
-import { StyleSheet, View, Text, Alert, Dimensions, Image } from 'react-native'
+import React, { useCallback, useEffect, useState } from 'react'
+import { StyleSheet, View, Text, Alert, Dimensions, Image, ActivityIndicator, ToastAndroid } from 'react-native'
 import colors from '../../constants/colors'
 import OTPTextView from 'react-native-otp-textinput';
 import CustomButton from '../atoms/buttoncomponent/button'
@@ -9,47 +9,143 @@ import UpperComponent from '../atoms/commonscreen/uppercontainer';
 import LowerComponent from '../atoms/commonscreen/lowercomponent';
 import { useDispatch, useSelector } from 'react-redux';
 import * as otpAction from '../../redux/actions/verifyotp'
+import * as authActions from '../../redux/actions/auth'
 
 const { width, height } = Dimensions.get('window')
 const Otpvalidatedscreen = (props) => {
     const [otpinput, setOtpInput] = useState('')
-    const route = useRoute()
-    const navigation = useNavigation()
-    const phonennumber = route.params?.userphonenumber;
-
-    const role = route.params?.role?.role ?? ""
     const dispatch = useDispatch();
+    const route = useRoute()
+    const [otpsend, setOtpsend] = useState(false)
+    const [resendotp, setResendOtp] = useState(false)
+    const [isuserregister, setIsuserregister] = useState(false)
+    const navigation = useNavigation()
+    const userdatawithphone = route.params?.userdata ?? '';
+
     const otporderdetails = useSelector(state => state.verifyotp)
-    console.log("this is null", otporderdetails)
-    const handleotpverification = () => {
-        // const otpresponse=useSelector(state=>state.verifyotp.success)
-        if (otporderdetails.success) {
-            Alert.alert("Congratulation!", "otp validation successfull")
-        }
+    const verifyregisteruser = useSelector(state => state.auth)
+
+    console.log("LOG FOR VERIFYUSER", verifyregisteruser)
+
+
+    //converting jason to formdata for the api payload
+    let formData = new FormData()
+    for (let key in verifyregisteruser.userdata) {
+        formData.append(key, verifyregisteruser.userdata[key])
     }
-    const handelOtp = () => {
+
+    // const handleVerifyOtp = async () => {
+    //     if (otpinput.length !== 4) {
+    //         Alert.alert("Alert", "Please enter valid Otp")
+    //     }
+    //     //check all the details of user and dispatch if customer else navigate to details page
+    //     const verifyOtpResponse = await dispatch(otpAction.verifyotp(otpinput, otporderdetails.otporderid, otporderdetails.countrycode, otporderdetails.phonenumber))
+    //     if (verifyOtpResponse.success == true) {
+    //         setIsuserregister(true)
+    //         if (verifyregisteruser.userselectedrole === 'Customer') {
+    //             dispatch(authActions.registeruser(formData)).then((res) => {
+    //                 console.log("register user data", res)
+    //                 setIsuserregister(false)
+    //                 if (res.success == true) {
+    //                     Alert.alert("Welcome to CERV!", "Please Login with your credentials😊")
+    //                     navigation.navigate('login')
+    //                 } else {
+    //                     Alert.alert("Error!!", res.message ?? "Something went wrong.Please try again")
+    //                 }
+    //             })
+    //         }
+    //         else if (verifyregisteruser.userselectedrole === 'Caterer') {
+    //             navigation.navigate('catererdetails')
+    //         } else {
+    //             Alert.alert("Something went wrong!", "Please restart your app")
+    //         }
+    //     } else {
+    //         Alert.alert("Error!", verifyOtpResponse.message ?? "Invalid OTP")
+    //     }
+    // }
+
+    const handleVerifyOtp = async () => {
         if (otpinput.length !== 4) {
-            Alert.alert("Alert", "Please enter valid Otp")
+            Alert.alert("Alert", "Please enter a valid OTP");
+            return;
         }
-        dispatch(otpAction.verifyotp(otpinput, otporderdetails.otporderid, otporderdetails.countrycode, otporderdetails.phonenumber))
+        setIsuserregister(true);
+        const otpData={
+            otp:otpinput,
+            orderid:otporderdetails.otporderid,
+            countrycode:otporderdetails.countrycode,
+            phonenumber:otporderdetails.phonenumber
+        }
+        const verifyOtpResponse = await dispatch(otpAction.verifyotp(otpData));
+        if (verifyOtpResponse.success) {
+            console.log('hello')
+            
+    //we can also add new user if needed in furture
+            switch (verifyregisteruser.userselectedrole) {
+                case 'Customer':
+                    handleCustomerRegistration();
+                    break;
+                case 'Caterer':
+                    //this flag remove the continueos loader of register user
+                    navigation.navigate('catererdetails');
+                    setIsuserregister(false);
+                    break;
+                default:
+                    Alert.alert("Error!", "Invalid user role");
+            }
+        } else {
+            setIsuserregister(false);
+            Alert.alert("Error!", verifyOtpResponse.message ?? "Invalid OTP");
+        }
+    };
+    
+    const handleCustomerRegistration = async () => {
+        const registrationResponse = await dispatch(authActions.registeruser(formData));
+        console.log("register user data", registrationResponse);
+        setIsuserregister(false);
+    
+        if (registrationResponse.success) {
+            Alert.alert("Thank you for Register!", "Please login with your credentials 😊");
+            navigation.navigate('login');
+        } else {
+            Alert.alert("Error!", registrationResponse.message ?? "Something went wrong. Please try again");
+        }
+    };
 
-
-        //     if(role==="Customer"){
-        //     navigation.navigate('login',{
-        //         role:role
-        //     }
-        // )}else if(role==="Caterer"){
-        //     navigation.navigate('catererdetails',{
-        //         role:role
-        //     })}
-        //     else{
-        //         Alert.alert("Something went wrong")
-        //     }
+    const handleresendotp = () => {
+        setResendOtp(true)
+        dispatch(otpAction.resendotp(otporderdetails.otporderid)).then((res) => {
+            console.log(res)
+            setResendOtp(false)
+            Alert.alert(res.message ?? "something  went wrong please try again.")
+        })
     }
-    useEffect(() => {
 
-        otporderdetails.success && handleotpverification()
-    }, [otporderdetails.success])
+
+    // const handleOtp = async () => {
+    //     if (otpinput.length !== 4) {
+    //         Alert.alert("Alert", "Please enter valid Otp")
+    //     }
+    //     // setOtpVerify(true)
+    //     await dispatch(otpAction.verifyotp(otpinput, otporderdetails.otporderid, otporderdetails.countrycode, otporderdetails.phonenumber)).then((res) => {
+    //         // setOtpVerify(false)
+    //         console.log("verifyuser", res)
+    //         if (res.isVerify) {
+    //             handleRegisterUser()
+    //         } else {
+    //             alert("error")
+    //         }
+    //     })
+    // }
+
+    // const handleRegisterUser = async () => {
+    //     console.log("register api call")
+    //     await dispatch(authActions.registeruser(formData)).then((res) => {
+    //         console.log("registeruser", res)
+    //     })
+    // }
+
+
 
     return (
         <View style={styles.mainscreen}>
@@ -58,7 +154,7 @@ const Otpvalidatedscreen = (props) => {
                     <View style={styles.uppertextcomponent}>
 
                         <Text style={styles.phonenumbertext}>Verification Code</Text>
-                        <Text style={styles.subtext}>{`we have sent an SMS to\n${phonennumber.slice(0, 2)}******${phonennumber.slice(-2)}. please enter the\ncode you receive below.`}</Text>
+                        <Text style={styles.subtext}>{`we have sent an SMS to\n${userdatawithphone.userphonenumber.slice(0, 2)}******${userdatawithphone.userphonenumber.slice(-2)}. please enter the\ncode you receive below.`}</Text>
 
                     </View>
                     <View style={styles.iconcontainer}>
@@ -71,22 +167,27 @@ const Otpvalidatedscreen = (props) => {
             <LowerComponent>
                 <View>
                     <OTPTextView
+                    
                         handleTextChange={(text) => setOtpInput(text)}
                         containerStyle={styles.textInputContainer}
-                        // handleCellTextChange={handleCellTextChange} 
+                        // handleCellTextChange={styles.cell} 
                         inputCount={4}
                         keyboardType="numeric"
-                        textInputStyle={styles.otpInputStyle} // Style for the text inside the boxes
-
+                        textInputStyle={styles.otpInputStyle} // Style for the text inside the box
                     />
                     <View style={styles.textcontainer}>
                         <Text style={styles.text}>Didn't Get the Code? </Text>
-                        <TouchableOpacity style={styles.resendoptbutton}>
-                            <Text style={styles.resendcode}>Resend Code</Text>
-                        </TouchableOpacity>
 
+                        {resendotp ? <ActivityIndicator size='small' color={colors.CERVmaincolor} /> : <TouchableOpacity onPress={handleresendotp} style={styles.resendoptbutton}>
+                            <Text style={styles.resendcode}>Resend Code</Text>
+                        </TouchableOpacity>}
                     </View>
-                    <CustomButton style={styles.button} title={'Verify Code'} onPress={handelOtp} />
+                    <CustomButton
+                        style={styles.button}
+                        title={isuserregister ? <ActivityIndicator size='small' color='black' /> : 'Verify Code'}
+                        disable={isuserregister?true:false}
+                        onPress={handleVerifyOtp}
+                    />
                 </View>
             </LowerComponent>
         </View>
@@ -101,12 +202,12 @@ const styles = StyleSheet.create({
         width: 50,
         height: 50,
         fontSize: 24,
-        borderWidth: 1,
         borderColor: 'black',
         borderRadius: 10,
         textAlign: 'center',
         borderRightColor: colors.CERVmaincolor,
-        backgroundColor: colors.CERVmaincolor
+        backgroundColor: colors.CERVmaincolor,
+        borderBottomColor:colors.CERVmaincolor,
     },
     text: {
         color: colors.lighttextcolor,
@@ -117,7 +218,7 @@ const styles = StyleSheet.create({
     },
     textInputContainer: {
         marginTop: 50,
-        marginBottom: 30
+        marginBottom: 30,
     },
     button: {
         marginTop: 20
@@ -166,7 +267,10 @@ const styles = StyleSheet.create({
         fontSize: width * 0.04
 
     },
-
+    cell:{
+        backgroundColor:'red',
+        
+    }
 
 })
 

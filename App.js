@@ -26,7 +26,7 @@ export default function App() {
 
   return (
     <View style={styles.container}>
-      <SafeAreaView style={{ flex: 1, backgroundColor: colors.CERVmaincolor }}>
+      {/* <SafeAreaView style={{ flex: 1}}> */}
         <GestureHandlerRootView style={{ flex: 1 }}>
           <Provider store={store}>
             <NavigationContainer>
@@ -34,7 +34,7 @@ export default function App() {
             </NavigationContainer>
           </Provider>
         </GestureHandlerRootView>
-      </SafeAreaView>
+      {/* </SafeAreaView> */}
 
 
 

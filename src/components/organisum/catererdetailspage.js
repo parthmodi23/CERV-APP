@@ -6,28 +6,33 @@ import Ordertypeanddetails from '../molecules/auth/ordertypeanddetails'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import CustomButton from '../atoms/buttoncomponent/button'
 import Foodcategory from '../molecules/auth/foodcategory'
+import { Formik } from 'formik'
 
 const Catererdetailspage = () => {
   const handlepress=()=>{
 
   }
   return (
-    <View style={{marginHorizontal:10}}>  
-      <ScrollView>
-        <KeyboardAwareScrollView>
-        <Businessinfo/>
-        <Ordertypeanddetails/>
-        <Foodcategory/>
-        <Driverinfo/>
-        <CustomButton style={styles.savebutton} title={'save'} onPress={handlepress}/> 
-        </KeyboardAwareScrollView>
-        </ScrollView>
-    </View>
+    <KeyboardAwareScrollView contentContainerStyle={styles.container}>
+   <Formik >
+
+    <Businessinfo />
+    <Ordertypeanddetails />
+    <Foodcategory />
+    <Driverinfo />
+    <CustomButton style={styles.saveButton} title={'Save'} onPress={handlepress} />
+   </Formik>
+  </KeyboardAwareScrollView>
   )
 }
 
 const styles=StyleSheet.create({
-
+  container: {
+    paddingHorizontal: 10,
+  },
+  saveButton: {
+    marginTop: 10,
+  },
 })
 
 export default Catererdetailspage

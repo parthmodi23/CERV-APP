@@ -13,7 +13,7 @@ import { useNavigation, useRoute } from '@react-navigation/native'
 import axios from 'axios'
 import UpperComponent from '../atoms/commonscreen/uppercontainer'
 import LowerComponent from '../atoms/commonscreen/lowercomponent'
-import { useDispatch } from 'react-redux';
+import { useDispatch,useSelector } from 'react-redux';
 import * as authActions from '../../redux/actions/auth'
 
 const { width, height } = Dimensions.get('window')
@@ -28,7 +28,9 @@ const RegisterUser = (props) => {
     const route = useRoute()
     const dispatch = useDispatch()
     const role = route.params?.role ?? ""
-
+    const authselector=useSelector(state=>state.auth)
+    console.log(authselector)
+    console.log("profile path :-",authselector.profilefilepath)
     return (
         <View style={styles.mainscreen}>
             <UpperComponent>
@@ -49,14 +51,16 @@ const RegisterUser = (props) => {
                     enableOnAndroid={true}
                     extraHeight={Platform.select({ android: 20 })}>
                     <View style={styles.camera}>
-                        <Camera />
+                        <Camera showButton={true} 
+                        // myimageurl={"file:///data/user/0/host.exp.exponent/cache/ExperienceData/%2540anonymous%252FNEWCERV-97b5a573-2130-437c-bdc3-cdeab4df4517/ImagePicker/fcb196c8-39f3-4eaf-83cb-5a99bfc3b59f.jpeg"}
+                        />
                     </View>
                     <Formik
                         const initialValues={{
                             username: '',
                             email: '',
                             password: '',
-                            confirmpassword: ''
+                            confirmpassword: '',
                         }}
                         validationSchema={Yup.object().shape({
                             username: Yup.string().required("User name is require"),
@@ -71,14 +75,29 @@ const RegisterUser = (props) => {
                                 Alert.alert("Alert!", "Please  Accept the terms and condition")
                             }
                             else {
-                                const formData = new FormData();
-                                formData.append('name', username);
-                                formData.append('email', email);
-                                formData.append('password', password);
-                                formData.append('role', role==='Caterer'?'1':'2');
-                                dispatch(authActions.registeruser(formData))
+                                const userdata={
+                                    name:values.username,
+                                    email:values.email,
+                                    password:values.password,
+                                    role:role==="Customer"?2:1,
+                                    // image:{
+                                    //     uri:authselector.profilefilepath,
+                                    //     name:`${values.username}.jpg`,
+                                    //     type:"image/jpeg"
+                                    // }
+                                }
+
+    
+                                // const formData = new FormData();
+                                // formData.append('name', values.username);
+                                // formData.append('email', values.email);
+                                // formData.append('password', values.password);
+                                // formData.append('role', role==='Caterer'?'1':'2');
+                                dispatch(authActions.saveuserdata(userdata))
                                 navigation.navigate('phonenumber', {
-                                    role: role
+                                    params:{
+                                        role: role,
+                                    }
                                 })
                             }
 
@@ -176,7 +195,7 @@ const styles = StyleSheet.create({
     },
     uppercomponent: {
         flexDirection: 'row',
-        margin: 15,
+        margin:20
     },
     textcomponent: {
         justifyContent: 'center'
