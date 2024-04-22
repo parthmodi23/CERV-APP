@@ -75,24 +75,37 @@ const RegisterUser = (props) => {
                                 Alert.alert("Alert!", "Please  Accept the terms and condition")
                             }
                             else {
+                                // const userdata={
+                                //     name:values.username,
+                                //     email:values.email,
+                                //     password:values.password,
+                                //     role:role==="Customer"?2:1,
+                                //     image:{
+                                //         uri:authselector.profilefilepath,
+                                //         type:'image/jpeg',
+                                //         name:'image.jpg',
+                                //     }
+                                // }
                                 const userdata={
                                     name:values.username,
                                     email:values.email,
                                     password:values.password,
                                     role:role==="Customer"?2:1,
-                                    // image:{
-                                    //     uri:authselector.profilefilepath,
-                                    //     name:`${values.username}.jpg`,
-                                    //     type:"image/jpeg"
-                                    // }
+                                    image:{
+                                        uri:authselector.profilefilepath,
+                                        type:'image/jpeg',
+                                        name:'photo.jpg',
+                                    },
+                                    // otpId:"Otp_DFD1EEC5F5444E9898F6D272F63125B6",
+                                    // otp:'4291'
                                 }
-
+console.log("userdata is here",userdata)
     
                                 // const formData = new FormData();
                                 // formData.append('name', values.username);
                                 // formData.append('email', values.email);
                                 // formData.append('password', values.password);
-                                // formData.append('role', role==='Caterer'?'1':'2');
+                                // formData.append('role', role==='Caternpm starter'?'1':'2');
                                 dispatch(authActions.saveuserdata(userdata))
                                 navigation.navigate('phonenumber', {
                                     params:{

@@ -4,4 +4,6 @@ white:'#ffffff',
 error:'red',
 lighttextcolor:'#cccccc',
 rightarrow:'gray',
+black: '#000000',
+checkcolor:'blue'
 }

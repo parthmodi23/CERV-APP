@@ -5,6 +5,8 @@ import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-nat
 import {MaterialCommunityIcons,SimpleLineIcons} from '@expo/vector-icons'
 import colors from '../../../constants/colors';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import CardData from '../../../Model/carddata';
+import CatererData from '../../../components/organisum/Customer/catererdata';
 const CustomerHomeScreen = (props) => {
 
   const navigation=useNavigation()
@@ -24,10 +26,31 @@ const CustomerHomeScreen = (props) => {
       />
     })
   })
+
+  const checkTokenStored = async () => {
+    try {
+      // Retrieve the token from AsyncStorage
+      const token = await AsyncStorage.getItem('userToken');
+      
+      // Check if token exists
+      if (token) {
+        console.log('Token is stored:', token);
+        // Do something if the token exists
+      } else {
+        console.log('Token is not stored');
+        // Do something if the token does not exist
+      }
+    } catch (error) {
+      console.error('Error checking token:', error);
+      // Handle error if any
+    }
+  };
+  checkTokenStored();
+  // Call the function to check if the token is stored
   return (
-    <View>
+    <View style={{flex:1}}>
         <Text>Home Screen</Text>
-      {console.log("new token",AsyncStorage.getItem('userToken'))}
+      <CatererData/>
     </View>
   )
 }

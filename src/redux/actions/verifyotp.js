@@ -1,4 +1,5 @@
 import { confirmPasswordReset } from "firebase/auth";
+import { HOST } from "../../apis/host";
 
 export const SEND_NUMBER='SEND_NUMBER'
 export const VERIFY_OTP='VERIFY_OTP'
@@ -12,7 +13,7 @@ export const sendotp = (phonenumber, countrycode) => {
     try{
     return async (dispatch) => {
       const response = await fetch(
-        `https://cerv-project.onrender.com/api/v1/auth/send-otp`,
+        HOST.CERVHOST+`/auth/send-otp`,
         {
           method: 'POST', 
           headers: {
@@ -60,7 +61,7 @@ export const sendotp = (phonenumber, countrycode) => {
     try{ 
     return async (dispatch) => {
       const response = await fetch(
-        `https://cerv-project.onrender.com/api/v1/auth/verify-otp`,
+        HOST.CERVHOST+`/auth/verify-otp`,
         {
           method: 'POST', 
           headers: {
@@ -96,10 +97,11 @@ export const sendotp = (phonenumber, countrycode) => {
   
   export const resendotp = (otporderid) => {
     console.log(otporderid);
-    try {
+  
       return async (dispatch) => {
-        const response = await fetch(
-          `https://cerv-project.onrender.com/api/v1/auth/resend-otp`,
+        try {
+          const response = await fetch(
+          HOST.CERVHOST+`/auth/resend-otp`,
           {
             method: 'POST',
             headers: {
@@ -113,18 +115,18 @@ export const sendotp = (phonenumber, countrycode) => {
   
         if (!response.ok) {
           const errorResData = await response.json();
-          const errorMessage = errorResData.message || 'Failed to resend OTP';
-          throw new Error(errorMessage);
+          const errorMessage = errorResData.message || 'Failed to resend OTP^^';
+         return errorMessage;
         }
   
         const resData = await response.json();
         console.log("resendotpresponse", resData);
         dispatch({ type: 'RESEND_OTP', payload: { message: resData.message } });
         return resData;
+      } catch (error) {
+        // console.error("resend otp error:", error);
+        throw new Error(error.message); 
+      }
       };
-    } catch (error) {
-      console.error("resend otp error:", error);
-      return { error: error.message || 'Error resending OTP' }; 
-    }
   };
   

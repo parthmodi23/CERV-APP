@@ -11,7 +11,6 @@ const Foodcategory = () => {
     { name: 'Italian', checked: false },
     { name: 'Thai', checked: false },
     { name: 'Korean', checked: false }
-
   ]);
 
   const handleCheckBoxToggle = (index) => {

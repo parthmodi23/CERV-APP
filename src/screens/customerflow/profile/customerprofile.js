@@ -17,7 +17,8 @@ const CustomerProfile = () => {
       <Camera imageoutercontainer={styles.cameraimagecontainer} 
       button={styles.button} 
       showButton={false}
-      myimageurl={authredux.profilefilepath}
+      forimage={styles.imagestyle}
+      myimageurl={authredux.user?.image}
       />
       </View>
       <ProfilePage/>
@@ -46,6 +47,12 @@ const styles=StyleSheet.create({
   },
   button:{
     bottom:10
+  },
+  imagestyle:{
+    resizeMode:'cover',
+    width:'100%',
+    height:'100%',
+    // aspectRatio:0.89
   }
 })
 

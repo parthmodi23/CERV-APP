@@ -17,7 +17,8 @@ import * as authActions from '../../redux/actions/auth'
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { LinearGradient } from 'expo-linear-gradient';
 
-
+import { SecureStore } from 'expo-secure-store'; // Example for Expo
+ 
 
 
 
@@ -60,35 +61,64 @@ const Loginform = (props) => {
         />
       ),
     });
+    console.log("run")
   }, [navigation]);
+
+  const storeUserToken=async(token)=>{
+    console.log("hello")
+   await AsyncStorage.setItem('userToken', token).then(()=>{
+      console.warn("store success");
+      navigation.navigate('customerhome')
+    }).catch((error)=>{
+      alert(error)
+    })
+  
+  }
 
   const handleUserLogin = async (values) => {
     setUserLogin(true)
-
+  try{
     await dispatch(authActions.login(values.email, values.password)).then((res) => {
       console.log(values)
-      console.log("response data login", res.role)
+      console.log("response data login", res)
       // if(userselectedrole==2 && userrole!=='Customer' || userselectedrole==1 && userrole!=='Caterer'){
       //   Alert.alert("Alert!","please select a valid role")
       // }
+
+      // if(!res.success){
+      //   Alert.alert(res.message??"something went wrong!!") 
+      //   return
+      // }
+      console.log("here is your token",res.token)
+      res.token ?  setToken(res.token) : "no token";
       console.log("userselected role", userselectedrole)
-      if (res.role === 2 && userrole === 'Caterer' || res.role === 1 && userrole === 'Customer') {
+      if (res.data.role === 2 && userrole === 'Caterer' || res.data.role === 1 && userrole === 'Customer') {
         Alert.alert("Alert!","please select your valid role")
       }
-      else if (res.role === 2) {
-        navigation.navigate('customerhome')
-      } else if (res.role === 1) {
+      else if (res.data.role === 2) {
+        storeUserToken(res.accessToken)
+      } else if (res.data.role === 1) {
+        AsyncStorage.setItem('userToken', token);
         navigation.navigate('catererhome')
       } else {
         Alert.alert("Error", res.message ?? "Something Went wrong!")
+        setUserLogin(false)
+        return
       }
-      console.log(res)
-      res.token ?  setToken(res.token) : "";
-      console.log(token)
-      AsyncStorage.setItem("userToken",token)
-      console.log("this one is user token",AsyncStorage.getItem("userToken"))
+      console.log("resonse data ",res)
+      // console.log(token)
+      // AsyncStorage.setItem("userToken",token)
+      // console.log("this one is user token",AsyncStorage.getItem("userToken"))
       setUserLogin(false)
-    })
+     
+    })}
+    catch(error){
+      Alert.alert("Error!!",error?.message?? "Invalid email or password!!!");
+      setUserLogin(false)
+      return
+    }
+   
+    
   }
 
   // if(isuserogin){
@@ -278,7 +308,7 @@ const styles = StyleSheet.create({
 color:colors.lighttextcolor
   },
   //uppercontainer
-  welcometext: {
+  welcometext: { 
     color: colors.white,
     fontWeight: 'bold',
     fontSize: width * 0.065,

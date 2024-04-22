@@ -80,11 +80,11 @@ import { Icon } from 'react-native-paper';
 
 const windowWidth = Dimensions.get('window').width;
 
-const FormInput = ({onChange,onBlur,values,placeholder,oniconpressed,sideicon,showicon,headingname,secureTextEntry,keyboardType,children,passwordeye,iconname,sideiconsecond}) => {
+const FormInput = ({onChange,onBlur,editable,values,placeholder,borderbox,oniconpressed,sideicon,showicon,headingname,secureTextEntry,keyboardType,children,passwordeye,iconname,sideiconsecond}) => {
     return (
             <View>
              <Text style={styles.headingtext}>{headingname}</Text>
-            <View style={styles.emailpasscomponent}>
+            <View style={[styles.emailpasscomponent,styles.borderbox]}>
                 <View style={{flexDirection:'row',alignItems:'center',flex:1}}>
             <MaterialCommunityIcons style={styles.icon} size={22} name={iconname} color='#f5694e' />
                 <TextInput style={styles.inputfeild}
@@ -94,6 +94,7 @@ const FormInput = ({onChange,onBlur,values,placeholder,oniconpressed,sideicon,sh
                     placeholder={placeholder}
                     secureTextEntry={secureTextEntry}
                     keyboardType={keyboardType}
+                    editable={editable}
                     {...children}
                 /></View>
             <TouchableOpacity onPress={passwordeye} style={styles.passwordeye}>

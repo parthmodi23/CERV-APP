@@ -32,6 +32,11 @@ const Phonenumberscreen = () => {
                 phone_no: number.substring(3, 13),
                 country_code: number.substring(1, 3)
             }
+        //     const usernumberdata = {
+        //         phoneNumber: number.substring(3, 13),
+        //         countryCode: "+91"
+        //  }
+
             userwithnumber = { ...userdata, ...usernumberdata }
             dispatch(authAction.saveuserdata(userwithnumber))
             dispatch(otpAction.sendotp(number.substring(3, 13), number.substring(1, 3)))

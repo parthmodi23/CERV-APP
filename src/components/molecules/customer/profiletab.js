@@ -3,7 +3,7 @@ import { MaterialCommunityIcons, MaterialIcons, Fontisto, Feather } from '@expo/
 import { View, Text, TouchableOpacity, Pressable, StyleSheet } from "react-native"
 import { heightPercentageToDP as hp ,widthPercentageToDP as wp } from 'react-native-responsive-screen';
 import colors from '../../../constants/colors';
-const ProfileTab = ({ title, text, onPress }) => {
+const ProfileTab = ({ title, text, onPress ,arrowRight}) => {
   return (
     <View style={styles.mainscreen}>
       <Pressable onPress={onPress} style={styles.rowcontainer}>
@@ -12,7 +12,7 @@ const ProfileTab = ({ title, text, onPress }) => {
           <Text style={styles.text}>{text}</Text>
         </View>
         <View style={styles.righterror}>
-          <MaterialCommunityIcons name='chevron-right' size={25} color={colors.rightarrow} />
+          {arrowRight && <MaterialCommunityIcons name='chevron-right' size={25} color={colors.rightarrow} />}
         </View>
       </Pressable>
       <View style={styles.line}></View>

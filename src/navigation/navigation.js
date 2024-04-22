@@ -19,9 +19,19 @@ import CustomerOrder from '../screens/customerflow/order/customerorder';
 import CustomerSearch from '../screens/customerflow/search/customersearch';
 import { Platform, Text } from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { MaterialCommunityIcons, MaterialIcons,Feather } from '@expo/vector-icons';
+import { MaterialCommunityIcons, MaterialIcons, Feather } from '@expo/vector-icons';
 import colors from '../constants/colors';
 import ChangePassword from '../screens/customerflow/profile/changepassword';
+import Foodorderthank from '../components/atoms/commonscreen/foodorderthank';
+import Loginform from '../components/organisum/loginform';
+import CatererCard from '../components/molecules/customer/caterercard';
+import PaymentCard from '../components/molecules/customer/paymentcard';
+import PaymentMethod from '../screens/customerflow/profile/paymentmethod';
+import PersonalInformation from '../components/organisum/Customer/personalinformation';
+import SaveAddress from '../components/organisum/Customer/saveaddres';
+import OrderCard from '../components/molecules/customer/ordercard';
+import { compose } from 'redux';
+import RacipeCard from '../components/molecules/customer/racipecard';
 
 
 const Stack = createStackNavigator()
@@ -40,12 +50,24 @@ const defaultStackNavigation = {
 };
 
 
-const CustomerProfileStack=()=>{
-  return(
-  <Stack.Navigator>
-    <Stack.Screen name="profilescreen" component={CustomerProfile} options={{headerShown:false}}/>
-    <Stack.Screen name="changepassword" component={ChangePassword} options={{headerShown:false}}/>
-  </Stack.Navigator>
+const CustomerProfileStack = () => {
+  return (
+    <Stack.Navigator initialRouteName='profilescreen'>
+      <Stack.Screen name="profilescreen" component={CustomerProfile} options={{ headerShown: false }} />
+      {/* <Stack.Screen name='savecard' component={PaymentMethod} options={{ headerShown: false }} />
+      <Stack.Screen name="personalinfo" component={PersonalInformation} options={{ headerShown: false }} />
+      <Stack.Screen name="changepassword" component={ChangePassword} options={{ headerShown: false }} />
+      <Stack.Screen name="saveaddress" component={SaveAddress} options={{ headerShown: false }} /> */}
+    </Stack.Navigator>
+  )
+}
+
+const OrderStack = () => {
+  return (
+    <Stack.Navigator>
+      <Stack.Screen name='Order' component={OrderCard} />
+      <Stack.Screen name='Orderhistory' component={CustomerOrder} />
+    </Stack.Navigator>
   )
 }
 
@@ -93,8 +115,6 @@ const Customerhome = () => {
           />,
           // tabBarVisibilityAnimationConfig: "fade",
           // tabBarBadge: 5,
-
-
         }}
       />
 
@@ -133,8 +153,8 @@ const Customerhome = () => {
 
 
       <BottomTab.Screen
-        name='customerprofile'
-        component={CustomerProfileStack}
+        name='profilescreen'
+        component={CustomerProfile}
         options={{
           headerTitle: "Profile",
           headerTitleAlign: "center",
@@ -158,7 +178,7 @@ const Catererhome = () => {
       <Stack.Screen name='catererhomescreen' component={CatererHomeScreen} options={{ headerShown: false }} />
       <Stack.Screen name='catererprofile' component={CatererProfile} options={{ headerShown: true }} />
       <Stack.Screen name='catererchat' component={CatererChat} options={{ headerShown: true }} />
-      <Stack.Screen name='catererorders' component={CatererOrders} options={{ headerShown: true }} />
+      <Stack.Screen name='catererorders' component={OrderStack} options={{ headerShown: true }} />
     </Stack.Navigator>
   )
 }
@@ -169,20 +189,28 @@ const MainNavigator = () => {
     <Stack.Navigator initialRouteName='select role'>
       <Stack.Screen name='orderdetails' component={Ordertypeanddetails} options={{ headerShown: false }} />
       <Stack.Screen name='select role' component={SelectRoleScreen} options={{ headerShown: false }} />
-      <Stack.Screen name="login" component={login} options={{ headerShown: false }} />
+      <Stack.Screen name="login" component={Loginform} options={{ headerShown: false }} />
       <Stack.Screen name='forgotpassword' component={Forgotpasswordscreen} options={{ headerShown: false }} />
       <Stack.Screen name="register" component={RegisterUserScreen} options={{ headerShown: false }} />
       <Stack.Screen name='phonenumber' component={Phonenumberpage} options={{ headerShown: false }} />
       <Stack.Screen name='otpscreen' component={Otpscreen} options={{ headerShown: false }} />
 
-      {/* //customer stack screens */}
-      <Stack.Screen name='customerhome' component={Customerhome} options={{ headerShown: false }} />
+  {/* //customer stack screens */}
+  {/* //after completion(sepreation of this portion is remaining) */}
+      <Stack.Screen name='customerhome' component={Customerhome} options={{headerShown:false}} />
+      <Stack.Screen name='savecard' component={PaymentMethod}  />
+      <Stack.Screen name="personalinfo" component={PersonalInformation}  />
+      <Stack.Screen name="changepassword" component={ChangePassword}  />
+      <Stack.Screen name="saveaddress" component={SaveAddress}  />
 
-      {/* //caterer portion */}
+
+  {/* //caterer portion */}
       <Stack.Screen name='catererhome' component={Catererhome} options={{ headerShown: false }} />
       <Stack.Screen name='catererdetails' component={Catererstoredetails} options={{ headerShown: false }} />
+      <Stack.Screen name='caterercard' component={PaymentCard} options={{ headerShown: false }} />
     </Stack.Navigator>
   )
 }
 
 export default MainNavigator
+

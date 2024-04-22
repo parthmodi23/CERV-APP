@@ -1,9 +1,10 @@
 import React, { useEffect } from 'react'
-import { Image, View } from 'react-native'
+import { Image, StyleSheet, View } from 'react-native'
 import { useNavigation, useRoute } from '@react-navigation/native'
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import {MaterialCommunityIcons,SimpleLineIcons,MaterialIcons} from '@expo/vector-icons'
 import colors from '../../../constants/colors';
+import RecepiList from '../../../components/organisum/Customer/recepilist';
 const CustomerSearch = () => {
 
 
@@ -21,10 +22,17 @@ const CustomerSearch = () => {
     })
   })
   return (
-   <View>
-
+   <View style={styles.recepis}>
+<RecepiList/>
    </View>
   )
 }
+
+const styles=StyleSheet.create({
+  recepis:{
+    flex:1,
+    margin:10
+  }
+})
 
 export default CustomerSearch

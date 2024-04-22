@@ -5,21 +5,24 @@ import { GestureHandlerRootView, NativeViewGestureHandler } from 'react-native-g
 import MainNavigator from './src/navigation/navigation';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 import colors from './src/constants/colors';
-import {thunk} from  'redux-thunk';
+import {thunk} from 'redux-thunk'; // Corrected import
 import auth from './src/redux/reducer/auth'
 import { combineReducers, createStore ,applyMiddleware} from 'redux';
 import logger from 'redux-logger';
 import { Provider } from 'react-redux';
 import verifyotp from './src/redux/reducer/verifyotp';
-
+import home from './src/redux/reducer/homereducer';
+import userProfile from './src/redux/reducer/profilereducer'
 // // Combine reducers
 const rootReducer = combineReducers({
   auth:auth,
   verifyotp:verifyotp,
+  home:home,
+  userProfile:userProfile
 });
 
 // Create Redux store
-const store = createStore(rootReducer, applyMiddleware(thunk,logger)); // Apply logger middleware and thunk also
+const store = createStore(rootReducer, applyMiddleware(thunk, logger)); // thunk and logger middlewares
 
 
 export default function App() {

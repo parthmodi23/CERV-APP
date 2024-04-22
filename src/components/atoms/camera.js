@@ -3,6 +3,7 @@ import React, { useState } from 'react'
 import { View, TouchableOpacity, Text, Alert, Image, StyleSheet } from 'react-native'
 import colors from '../../constants/colors'
 import {useDispatch,useSelector} from 'react-redux'
+// import * as ImagePicker from 'expo-image-picker';
 import * as authAction from '../../redux/actions/auth'
 const Camera = ({screen,imageoutercontainer,forimage,button,showButton,myimageurl}) => {
     const [imageuri, setImageuri] = useState()
@@ -30,11 +31,12 @@ const Camera = ({screen,imageoutercontainer,forimage,button,showButton,myimageur
         }
 
         const image = await launchCameraAsync({
+            // mediaTypes: ImagePicker.MediaTypeOptions.All,
             allowsEditing: true,
             aspect: [4, 4],
             quality: 0.5
         });
-        
+        console.log(image)
         const imagepath=image.assets[0].uri
         setImageuri(imagepath)
         dispatch(authAction.storeprofilepicturepath(imagepath))

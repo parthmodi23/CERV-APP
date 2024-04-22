@@ -33,7 +33,7 @@ const Otpvalidatedscreen = (props) => {
     for (let key in verifyregisteruser.userdata) {
         formData.append(key, verifyregisteruser.userdata[key])
     }
-
+        console.log(formData)
     // const handleVerifyOtp = async () => {
     //     if (otpinput.length !== 4) {
     //         Alert.alert("Alert", "Please enter valid Otp")
@@ -70,25 +70,24 @@ const Otpvalidatedscreen = (props) => {
             return;
         }
         setIsuserregister(true);
-        const otpData={
-            otp:otpinput,
-            orderid:otporderdetails.otporderid,
-            countrycode:otporderdetails.countrycode,
-            phonenumber:otporderdetails.phonenumber
+        const otpData = {
+            otp: otpinput,
+            orderid: otporderdetails.otporderid,
+            countrycode: "91",
+            phonenumber: otporderdetails.phonenumber
         }
         const verifyOtpResponse = await dispatch(otpAction.verifyotp(otpData));
         if (verifyOtpResponse.success) {
             console.log('hello')
-            
-    //we can also add new user if needed in furture
+            //we can also add new user if needed in furture
             switch (verifyregisteruser.userselectedrole) {
                 case 'Customer':
                     handleCustomerRegistration();
                     break;
                 case 'Caterer':
                     //this flag remove the continueos loader of register user
-                    navigation.navigate('catererdetails');
                     setIsuserregister(false);
+                    navigation.navigate('catererdetails');
                     break;
                 default:
                     Alert.alert("Error!", "Invalid user role");
@@ -98,27 +97,37 @@ const Otpvalidatedscreen = (props) => {
             Alert.alert("Error!", verifyOtpResponse.message ?? "Invalid OTP");
         }
     };
-    
+
     const handleCustomerRegistration = async () => {
+        console.log(formData)
+        try{
         const registrationResponse = await dispatch(authActions.registeruser(formData));
         console.log("register user data", registrationResponse);
         setIsuserregister(false);
-    
+
         if (registrationResponse.success) {
             Alert.alert("Thank you for Register!", "Please login with your credentials 😊");
             navigation.navigate('login');
         } else {
-            Alert.alert("Error!", registrationResponse.message ?? "Something went wrong. Please try again");
+            Alert.alert("Error!", registrationResponse.msg ?? "Something went wrong. Please try again");
+        }}catch(err){
+            Alert.alert(err)
+            return
         }
     };
 
     const handleresendotp = () => {
+        try{
         setResendOtp(true)
         dispatch(otpAction.resendotp(otporderdetails.otporderid)).then((res) => {
             console.log(res)
             setResendOtp(false)
             Alert.alert(res.message ?? "something  went wrong please try again.")
-        })
+        })}
+        catch(error){
+            setResendOtp(false)
+            Alert.alert(error)
+        }
     }
 
 
@@ -167,7 +176,7 @@ const Otpvalidatedscreen = (props) => {
             <LowerComponent>
                 <View>
                     <OTPTextView
-                    
+
                         handleTextChange={(text) => setOtpInput(text)}
                         containerStyle={styles.textInputContainer}
                         // handleCellTextChange={styles.cell} 
@@ -185,7 +194,7 @@ const Otpvalidatedscreen = (props) => {
                     <CustomButton
                         style={styles.button}
                         title={isuserregister ? <ActivityIndicator size='small' color='black' /> : 'Verify Code'}
-                        disable={isuserregister?true:false}
+                        disable={isuserregister ? true : false}
                         onPress={handleVerifyOtp}
                     />
                 </View>
@@ -207,7 +216,7 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         borderRightColor: colors.CERVmaincolor,
         backgroundColor: colors.CERVmaincolor,
-        borderBottomColor:colors.CERVmaincolor,
+        borderBottomColor: colors.CERVmaincolor,
     },
     text: {
         color: colors.lighttextcolor,
@@ -267,9 +276,9 @@ const styles = StyleSheet.create({
         fontSize: width * 0.04
 
     },
-    cell:{
-        backgroundColor:'red',
-        
+    cell: {
+        backgroundColor: 'red',
+
     }
 
 })
