@@ -13,11 +13,15 @@ import { Provider } from 'react-redux';
 import verifyotp from './src/redux/reducer/verifyotp';
 import home from './src/redux/reducer/homereducer';
 import userProfile from './src/redux/reducer/profilereducer'
+import order from './src/redux/reducer/order'
+import menu from './src/redux/reducer/caterer/menu'
 // // Combine reducers
 const rootReducer = combineReducers({
   auth:auth,
   verifyotp:verifyotp,
   home:home,
+  menu:menu,
+  order:order,
   userProfile:userProfile
 });
 

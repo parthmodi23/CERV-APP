@@ -4,7 +4,7 @@ import { View, Text, Image, StyleSheet } from 'react-native'
 import colors from '../../../constants/colors'
 import { heightPercentageToDP as hp,widthPercentageToDP as wp} from 'react-native-responsive-screen'
 
-const PaymentCard = ({imageUri,cardNumber,expireDate}) => {
+const PaymentCard = ({imageUri,cardNumber,expireDate,checkcolor}) => {
     return (
         <View style={styles.mainScreen}>
             <View style={styles.cardContainer}>
@@ -22,7 +22,7 @@ const PaymentCard = ({imageUri,cardNumber,expireDate}) => {
                     </View>
                 </View>
                 <View style={styles.icon}>
-                    <MaterialCommunityIcons name='check-circle' size={30} color={"green"} />
+                    <MaterialCommunityIcons name='check-circle' size={30} color={checkcolor} />
                 </View>
             </View>
         </View>
@@ -31,7 +31,7 @@ const PaymentCard = ({imageUri,cardNumber,expireDate}) => {
 
 const styles = StyleSheet.create({
     mainScreen: {
-        flex: 1,
+        // flex: 1,
         marginHorizontal: 10,
         justifyContent: 'center',
         textAlign: 'center'

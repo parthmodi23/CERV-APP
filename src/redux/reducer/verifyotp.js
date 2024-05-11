@@ -31,6 +31,7 @@ export default (state=initialState, action) => {
                 ...state,
                 message:action.payload.message
             }
+        
 
         default:
             return state;

@@ -7,7 +7,7 @@ const initialState = {
     message:null,
     registerusersuccess:false,
     userselectedrole:null,
-    // profilefilepath:null,
+    profilefilepath:null,
     passwordchangesuccess:false
 }
 
@@ -54,11 +54,11 @@ export default (state=initialState, action) => {
                 ...state,
                 userselectedrole:action.payload.role
             }
-        // case 'PROFILEPICTUREPATH':
-        //     return{
-        //         ...state,
-        //         profilefilepath:action.payload.filepath
-        //     }
+        case 'PROFILEPICTUREPATH':
+            return{
+                ...state,
+                profilefilepath:action.payload.filepath
+            }
         case 'CHNAGEPASSWORD':
                 return{
                     ...state,

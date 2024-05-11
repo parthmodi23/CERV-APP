@@ -7,7 +7,7 @@ node_modules/
 .expo/
 dist/
 web-build/
-
+# %ProgramData%/
 # Native
 *.orig.*
 *.jks
@@ -16,6 +16,8 @@ web-build/
 *.key
 *.mobileprovision
 
+doctorapp
+patient
 # Metro
 .metro-health-check*
 

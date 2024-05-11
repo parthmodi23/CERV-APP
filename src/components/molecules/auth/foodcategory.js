@@ -58,10 +58,10 @@ const styles = StyleSheet.create({
     marginHorizontal: 20,
     marginTop: 20
   },
-  text:{
-    fontSize:20,
-    marginBottom:20,
-    color:'black'
+  text: {
+    fontSize: 20,
+    marginBottom: 20,
+    color: 'black'
   },
   checkboxContainer: {
     flexDirection: 'row',
@@ -71,7 +71,7 @@ const styles = StyleSheet.create({
   label: {
     marginLeft: 8,
     flex: 1,
-    color:'black'
+    color: 'black'
   },
   selectedCategoriesInput: {
     marginBottom: 10,

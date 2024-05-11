@@ -26,6 +26,7 @@ const Driverinfo = (props) => {
     <Camera
      imageoutercontainer={styles.imageoutercontainer}
      forimage={styles.forimage}
+     showButton={false}
      />  
      </View>
 

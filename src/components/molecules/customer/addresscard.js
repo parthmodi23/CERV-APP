@@ -5,29 +5,21 @@ import colors from '../../../constants/colors';
 import { RadioButton } from 'react-native-paper';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 
-const AddressCard = ({Title,Address,userValue}) => {
-  const [isChecked, setIsChecked] = useState(true);
-
-  const handleRadioChange = (value) => {
-    setIsChecked(value); 
-  };
-
+const AddressCard = ({ Title, Address, userValue }) => {
 
   return (
     <View style={styles.mainScreen}>
-      <RadioButton.Group onValueChange={handleRadioChange} value={isChecked}>
-        <View style={styles.mainCardView}>
+      <View style={styles.mainCardView}>
         <View style={styles.cardContainer}>
           <View style={styles.text}>
             <Text style={styles.mainText}>{Title}</Text>
             <Text numberOfLines={2} style={styles.subText}>{Address}</Text>
           </View>
-          <View style={styles.radioButton} >
-            <RadioButton value={userValue} /></View>
-        </View> 
-            <View style={styles.line}></View>
+          <View style={styles.radioButton}>
+            <RadioButton value={userValue} color={colors.CERVmaincolor} /></View>
         </View>
-      </RadioButton.Group>
+        <View style={styles.line}></View>
+      </View>
     </View>
   );
 };
@@ -51,7 +43,7 @@ const styles = StyleSheet.create({
   },
   mainText: {
     fontSize: hp(2.5),
-    fontWeight:'bold'
+    fontWeight: 'bold'
   },
   subText: {
     fontSize: hp(2),
@@ -61,13 +53,13 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     marginTop: hp(0.5),
     borderColor: colors.lighttextcolor,
-    backgroundColor:colors.lighttextcolor
+    backgroundColor: colors.lighttextcolor
   },
   radioButton: {
-    marginHorizontal: wp(5),
+    marginHorizontal: wp(0),
   },
-  mainCardView:{
-    flexDirection:'column',
+  mainCardView: {
+    flexDirection: 'column',
     marginHorizontal: wp(3)
 
   }

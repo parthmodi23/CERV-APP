@@ -1,5 +1,5 @@
 import React from 'react'
-import RoleScreen from '../../components/organisum/rolescreen'
+import RoleScreen from '../../components/organisms/auth/rolescreen'
 import { Text, View } from 'react-native'
 
 const SelectRoleScreen = () => {

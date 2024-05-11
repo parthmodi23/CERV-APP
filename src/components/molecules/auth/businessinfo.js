@@ -30,7 +30,7 @@ const Businessinfo = () => {
         }
         }
       >
-        {({ handleSubmit,handleChange,handleBlur }) => (
+        {({ handleSubmit,handleChange,handleBlur,values }) => (
           <View>
             <FormInput
               placeholder={"License Number"}
@@ -43,6 +43,7 @@ const Businessinfo = () => {
             <Camera
               imageoutercontainer={styles.imageoutercontainer}
               forimage={styles.forimage}
+              showButton={false}
             />
             <FormInput
               headingname={"Address"}

@@ -1,5 +1,5 @@
 import React from 'react'
-import SavedCard from '../../../components/organisum/Customer/savedcard'
+import SavedCard from '../../../components/organisms/Customer/savedcard'
 import { Text, View,StyleSheet } from 'react-native'
 import colors from '../../../constants/colors'
 import { heightPercentageToDP as hp,widthPercentageToDP as wp} from 'react-native-responsive-screen'
@@ -11,6 +11,7 @@ const PaymentMethod = () => {
     <Text>ADD CARD</Text>
         </View> */}
         <SavedCard/>
+        
     </View>
   )
 }

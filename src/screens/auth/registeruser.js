@@ -1,5 +1,5 @@
 import React from 'react'
-import RegisterUser from '../../components/organisum/registeruser'
+import RegisterUser from '../../components/organisms/auth/registeruser'
 import { View } from 'react-native'
 
 const RegisterUserScreen = () => {

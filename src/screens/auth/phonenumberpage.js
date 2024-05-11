@@ -1,5 +1,5 @@
 import React from 'react'
-import Phonenumberscreen from '../../components/organisum/phonenumberscreen'
+import Phonenumberscreen from '../../components/organisms/auth/phonenumberscreen'
 import { View } from 'react-native'
 
 const Phonenumberpage = () => {

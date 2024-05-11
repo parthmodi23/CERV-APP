@@ -1,6 +1,6 @@
 import React from 'react'
 import { View } from 'react-native'
-import ChangePasswordScreen from '../../../components/organisum/Customer/changepasswordscreen'
+import ChangePasswordScreen from '../../../components/organisms/Customer/changepasswordscreen'
 
 const ChangePassword = ({ navigation }) => {
 

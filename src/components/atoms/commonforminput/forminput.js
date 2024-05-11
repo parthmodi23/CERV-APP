@@ -71,7 +71,7 @@
 // export default FormInput
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////
 import React from 'react'
-import { TextInput,View,Text,Button,StyleSheet, Dimensions } from 'react-native'
+import { TextInput, View, Text, Button, StyleSheet, Dimensions } from 'react-native'
 import { Ionicons } from '@expo/vector-icons';
 
 import { AntDesign, MaterialCommunityIcons } from '@expo/vector-icons';
@@ -80,60 +80,61 @@ import { Icon } from 'react-native-paper';
 
 const windowWidth = Dimensions.get('window').width;
 
-const FormInput = ({onChange,onBlur,editable,values,placeholder,borderbox,oniconpressed,sideicon,showicon,headingname,secureTextEntry,keyboardType,children,passwordeye,iconname,sideiconsecond}) => {
+const FormInput = ({ onChange, onBlur, editable,closesideicon, values, placeholder, borderbox, oniconpressed, sideicon, showicon, headingname, secureTextEntry, keyboardType, children, passwordeye, iconname, sideiconsecond,isVisible }) => {
     return (
-            <View>
-             <Text style={styles.headingtext}>{headingname}</Text>
-            <View style={[styles.emailpasscomponent,styles.borderbox]}>
-                <View style={{flexDirection:'row',alignItems:'center',flex:1}}>
-            <MaterialCommunityIcons style={styles.icon} size={22} name={iconname} color='#f5694e' />
-                <TextInput style={styles.inputfeild}
-                    onChangeText={onChange} 
-                    onBlur={onBlur}
-                    value={values}
-                    placeholder={placeholder}
-                    secureTextEntry={secureTextEntry}
-                    keyboardType={keyboardType}
-                    editable={editable}
-                    {...children}
-                /></View>
-            <TouchableOpacity onPress={passwordeye} style={styles.passwordeye}>
-            <MaterialCommunityIcons  size={24} name={sideicon} color='#f5694e' />
-            {/* <Ionicons onPress={oniconpressed} name={sideiconsecond} size={24} color='#f5694e'/> */}
-            </TouchableOpacity>
+        <View>
+            <Text style={styles.headingtext}>{headingname}</Text>
+            <View style={[styles.emailpasscomponent, styles.borderbox]}>
+                <View style={{ flexDirection: 'row', alignItems: 'center', flex: 1 }}>
+                    <MaterialCommunityIcons style={styles.icon} size={22} name={iconname} color='#f5694e' />
+                    <TextInput style={styles.inputfeild}
+                        onChangeText={onChange}
+                        onBlur={onBlur}
+                        value={values}
+                        placeholder={placeholder}
+                        secureTextEntry={secureTextEntry}
+                        keyboardType={keyboardType}
+                        editable={editable}
+                        {...children}
+                    />
+                </View>
+                <TouchableOpacity onPress={passwordeye} style={styles.passwordeye}>
+                    <MaterialCommunityIcons size={24} name={sideicon} color='#f5694e' />
+                    {/* <Ionicons onPress={oniconpressed} name={sideiconsecond} size={24} color='#f5694e'/> */}
+                </TouchableOpacity>
             </View>
-            </View>
-        
-        
+        </View>
+
+
 
     )
 }
 
-const styles=StyleSheet.create({
+const styles = StyleSheet.create({
     emailpasscomponent: {
-            flexDirection: 'row',
-            borderBottomColor: 'black',
-            alignItems: 'center', // Center items vertically
-            borderBottomWidth: 2,
-            // flex:1
+        flexDirection: 'row',
+        borderBottomColor: 'black',
+        alignItems: 'center', // Center items vertically
+        borderBottomWidth: 2,
+        // flex:1
     },
-    inputfeild:{
+    inputfeild: {
         // borderBottomWidth:2,
-        flex:1,
-        marginHorizontal:5
+        flex: 1,
+        marginHorizontal: 5
     },
-    icon:{
+    icon: {
         // marginRight:5,
     },
     headingtext: {
         marginVertical: 10,
-        color: '#cccccc',
+        color: '#737373',
         fontSize: 15,
-        fontWeight:'bold'
-      },
-      passwordeye:{
+        fontWeight: 'bold'
+    },
+    passwordeye: {
         // paddingHorizontal: 10,
-      },
+    },
 })
 
 export default FormInput

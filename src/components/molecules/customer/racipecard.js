@@ -35,14 +35,16 @@ const styles = StyleSheet.create({
         marginHorizontal: wp(4),
         marginVertical: hp(2),
         elevation:3,
+        backgroundColor:colors.white
     },
     image: {
-        height:hp(15),
+        height:hp(14),
         width: wp(33)
     },
     text: {
         fontWeight: 'bold',
-        marginBottom: hp(2)
+        marginBottom: hp(1.5),
+        fontSize:hp(2)
     }
 })
 export default RacipeCard

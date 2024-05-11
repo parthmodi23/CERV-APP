@@ -3,12 +3,12 @@ import { StyleSheet, View ,Text, Pressable} from 'react-native'
 import { widthPercentageToDP as wp,heightPercentageToDP as hp } from 'react-native-responsive-screen'
 import colors from '../../../constants/colors'
 
-const OrderCard = ({Title,onPress,bgcolor}) => {
+const OrderCard = ({Title,onPress,bgcolor,textColor}) => {
   return (
     <View style={styles.mainScreen}>
         <Pressable onPress={onPress}>
         <View style={[styles.boxContainer,{backgroundColor:bgcolor}]}>
-            <Text style={styles.text}>{Title}</Text>
+            <Text style={[styles.text,{color:textColor}]}>{Title}</Text>
         </View>
         </Pressable>
     </View>
@@ -27,7 +27,6 @@ const styles = StyleSheet.create({
         borderColor:colors.lighttextcolor,
     },
     text:{
-        color:colors.black,
         fontWeight:'bold'
     }
 })

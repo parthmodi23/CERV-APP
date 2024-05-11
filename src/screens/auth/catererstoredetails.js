@@ -1,5 +1,5 @@
 import React from 'react'
-import Catererdetailspage from '../../components/organisum/catererdetailspage'
+import Catererdetailspage from '../../components/organisms/auth/catererdetailspage'
 import { View } from 'react-native'
 
 const Catererstoredetails = () => {
