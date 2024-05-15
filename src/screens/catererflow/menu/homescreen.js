@@ -6,14 +6,14 @@ import CatererMenuCard from '../../../components/molecules/caterer/caterermenuca
 const CatererHomeScreen = (props) => {
   return (
     <View style={styles.mainScreen}>
-      <CatererMenuScreen/>
+      <CatererMenuScreen />
     </View>
   )
 }
 
-const styles=StyleSheet.create({
-  mainScreen:{
-    flex:1,
+const styles = StyleSheet.create({
+  mainScreen: {
+    flex: 1,
   }
 })
 

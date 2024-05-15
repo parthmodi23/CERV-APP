@@ -14,6 +14,7 @@ import DateTimePicker from '@react-native-community/datetimepicker';
 import { TouchableOpacity } from 'react-native-gesture-handler'
 import { Fontisto, MaterialCommunityIcons } from '@expo/vector-icons'
 import order from '../../../redux/reducer/order'
+import { FA6Style } from '@expo/vector-icons/build/FontAwesome6'
 
 const CatererRecipeDetails = () => {
 
@@ -32,6 +33,10 @@ const CatererRecipeDetails = () => {
     console.log(catererId)
 
     useEffect((itemId) => {
+        navigation.setOptions({
+            headerTitle: 'Details',
+            headerTitleAlign: 'center',
+        })
         setIsRefresing(true);
         dispatch(homeAction.getSingleCatererData(catererId))
             .then((data) => {
@@ -117,24 +122,8 @@ const CatererRecipeDetails = () => {
         return product ? product.quantity : 0;
     };
 
-    console.log("order Item is here last",orderItem)
-    const mydata = [
-        {
-            id: 1,
-            titel: 'ggt',
-            count: 2
-        },
-        {
-            id: 2,
-            title: 'll',
-            count: 5
-        },
-        {
-            id: 3,
-            title: 'oo',
-            count: 45
-        }
-    ]
+    console.log("order Item is here last", orderItem)
+
     const foodData = [
         { id: 1, title: "House Noodles", subtitle: "Sliced Beef, Braised Lamb, BBQ Chicken", price: 13.39 },
         { id: 2, title: "Spicy Garlic Noodles", subtitle: "Shrimp, Garlic, Chili Flakes", price: 11.99 },
@@ -149,14 +138,14 @@ const CatererRecipeDetails = () => {
     const handleDateChange = (event, selected) => {
         const currentDate = selected || selectedDate;
         setShowDatePicker(false);
-        setSelectedDate(currentDate); 
-        console.log("date is here================>",currentDate.toLocalString())
+        setSelectedDate(currentDate);
+        console.log("date is here================>", currentDate.toLocalString())
     };
     const handleTimeChange = (event, selected) => {
         const currentTime = selected || selectedTime;
         setShowTimePicker(false);
-        setSelectedTime(currentTime)     
-        console.log("selected time is----------------->",currentTime)
+        setSelectedTime(currentTime)
+        console.log("selected time is----------------->", currentTime)
     };
 
     const handleItemPress = (item) => {
@@ -165,27 +154,27 @@ const CatererRecipeDetails = () => {
 
     console.log("caterer data from state", subCategoryData)
     const handleFinalOrder = () => {
-        const finalOrderData = {
 
+        const firstData=catererSubData
+        const finalOrderData = {
             "catererId": subCategoryData?.data?.id,
-            "couponId": 1,
             "addressId": 14,
             "status": "PENDING",
             "order_type": "DELIVERY",
             "payment_method": "COD",
             "service_charge": 1.00,
             "delivery_fee": 2.00,
-            "promo_discount": 2.50,
-            "subtotal": +(totalPrice+3-2.50).toFixed(2),
+            "subtotal": +(totalPrice + 3).toFixed(2),
             "tax_charge": 5.10,
-            "total_amount":+(totalPrice+5.10+3-2.50).toFixed(2),
+            "total_amount": +(totalPrice + 5.10 + 3).toFixed(2),
             "delivery_datetime": "2024-05-15 05:30:00",
             "order_items": orderItem
         }
-    
-        navigation.navigate('orderreceipt',{
-            params:{
-                finalOrderData:finalOrderData
+
+        navigation.navigate('orderreceipt', {
+            params: {
+                finalOrderData: finalOrderData,
+                firstData :firstData
             }
         }
 
@@ -198,6 +187,7 @@ const CatererRecipeDetails = () => {
             <ActivityIndicator size="large" color='black' />
         </View>)
     }
+    console.log("sub Category data is here", subCategoryData)
 
     return (
         <View style={{ flex: 1 }}>
@@ -248,12 +238,17 @@ const CatererRecipeDetails = () => {
                     <FormInput
                         headingname={'Food Category'}
                         placeholder={'Category'}
-                        values={subCategoryData?.data?.food_category}
+                        values={subCategoryData?.data?.id === 49 ? 'Chinese Food' : 'Best Food'}
+                        iconname={'food'}
+                        editable={false}
                     />
                     <FormInput
                         headingname={'Bio'}
                         placeholder={'Bio'}
-                        values={subCategoryData?.data?.bio}
+                        values={subCategoryData?.data?.id === 49 ? `Compromise with quality is not our business!` : 'Good food great taste a pleasure for you!'}
+                        iconname={'bio'}
+                        editable={false}
+                        numberOfLines={2}
                     />
                 </View>
 
@@ -261,7 +256,7 @@ const CatererRecipeDetails = () => {
                     <Text style={styles.orderTypeText}>Order Type</Text>
                     <RadioButton.Group onValueChange={handleRadioButtonChange} value={isChecked}>
                         <View style={styles.orderRadioContainer}>
-                            <View style={styles.orderRadioButton}>
+                            <View style={[styles.orderRadioButton, styles.deliveryButton]}>
                                 <View style={styles.radioButton}>
                                     <RadioButton value="delivery" color={colors.CERVmaincolor} />
                                 </View>
@@ -308,8 +303,8 @@ const CatererRecipeDetails = () => {
                         keyExtractor={(item) => item.id}
                         renderItem={({ item }) => {
                             return (
-                                <View>
-                                    <View style={styles.horizontalSeperator} />
+                                <View style={styles.CardContainer}>
+                                    {/* <View style={styles.horizontalSeperator} /> */}
                                     <TouchableOpacity style={styles.boxView} onPress={() => setShowData(!showData)}>
                                         <Text style={styles.subTitleText}>{item?.name}</Text>
                                         <Text style={styles.subTitleTotalText}>{item?.product_count} items</Text>
@@ -322,8 +317,9 @@ const CatererRecipeDetails = () => {
                                                 return (
                                                     <View style={styles.foodCardContainer}>
                                                         <CatererSubCategoryCard
+                                                            imageUri={item?.image}
                                                             title={item?.food_name}
-                                                            subTitle={item?.subtitle}
+                                                            subTitle={item?.food_description}
                                                             price={item.prices.slice(0, 1).map((item) => {
                                                                 return (
                                                                     `$${item.price}`
@@ -340,7 +336,7 @@ const CatererRecipeDetails = () => {
 
                                             }}
                                         />)}
-                                    <View style={styles.horizontalSeperator} />
+                                    {/* <View style={styles.horizontalSeperator} /> */}
                                 </View>
                             )
                         }}
@@ -397,8 +393,8 @@ const styles = StyleSheet.create({
     orderRadioButton: {
         flexDirection: 'row',
         alignItems: 'center',
-        justifyContent: 'space-around',
-        marginHorizontal: Metrics.CountScale(50)
+        // justifyContent: 'space-around',
+        // marginHorizontal: Metrics.CountScale(50)
     },
     seperator: {
 
@@ -406,6 +402,9 @@ const styles = StyleSheet.create({
         borderRightWidth: Metrics.CountScale(1.5),
         borderRightColor: colors.White,
         // marginHorizontal:30
+    },
+    CardContainer:{
+        marginVertical:Metrics.CountScale(10)
     },
     orederType: {
         justifyContent: 'space-around'
@@ -425,7 +424,7 @@ const styles = StyleSheet.create({
         marginHorizontal: Metrics.CountScale(5)
     },
     foodCardContainer: {
-        marginVertical: Metrics.CountScale(5)
+        marginVertical: Metrics.CountScale(5),
     },
     dateTextStyle: {
         color: colors.GreyColor
@@ -456,8 +455,10 @@ const styles = StyleSheet.create({
     },
 
     boxView: {
-        paddingVertical: Metrics.CountScale(5),
+        paddingVertical: Metrics.CountScale(12),
         paddingHorizontal: Metrics.CountScale(10),
+        borderWidth: Metrics.CountScale(1.1),
+        borderColor: colors.GreyBg
     },
     subTitleText: {
         fontSize: Metrics.CountScale(20),
@@ -470,6 +471,9 @@ const styles = StyleSheet.create({
         borderTopColor: colors.stronglighttext,
         borderTopWidth: Metrics.CountScale(1.5),
         marginVertical: Metrics.CountScale(10)
+    },
+    deliveryButton: {
+        marginRight: Metrics.CountScale(70)
     }
 
 

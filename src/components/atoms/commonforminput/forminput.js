@@ -80,7 +80,7 @@ import { Icon } from 'react-native-paper';
 
 const windowWidth = Dimensions.get('window').width;
 
-const FormInput = ({ onChange, onBlur, editable,closesideicon, values, placeholder, borderbox, oniconpressed, sideicon, showicon, headingname, secureTextEntry, keyboardType, children, passwordeye, iconname, sideiconsecond,isVisible }) => {
+const FormInput = ({ onChange, onBlur,numberOfLines, editable,closesideicon, values, placeholder, borderbox, oniconpressed, sideicon, showicon, headingname, secureTextEntry, keyboardType, children, passwordeye, iconname, sideiconsecond,isVisible }) => {
     return (
         <View>
             <Text style={styles.headingtext}>{headingname}</Text>
@@ -95,6 +95,7 @@ const FormInput = ({ onChange, onBlur, editable,closesideicon, values, placehold
                         secureTextEntry={secureTextEntry}
                         keyboardType={keyboardType}
                         editable={editable}
+                        numberOfLines={numberOfLines}
                         {...children}
                     />
                 </View>

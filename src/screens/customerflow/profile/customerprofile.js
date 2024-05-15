@@ -19,6 +19,7 @@ const CustomerProfile = () => {
       myimageurl={authredux.user?.image}
       />
       </View>
+      {/* <Text>hello,</Text> */}
       <ProfilePage/>
     </View>
   )

@@ -1,15 +1,23 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Dimensions, Text, View, FlatList, StyleSheet, Image, TouchableOpacity } from 'react-native';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
+import Metrics from '../../../assests/Metrics';
 
 const CarouselView = () => {
     const width = Dimensions.get('window').width;
-    const img1 = 'https://images.pexels.com/photos/346529/pexels-photo-346529.jpeg?auto=compress&cs=tinysrgb&w=600';
-    const img2 = 'https://images.pexels.com/photos/147411/italy-mountains-dawn-daybreak-147411.jpeg?auto=compress&cs=tinysrgb&w=600';
-    const img3 = 'https://images.pexels.com/photos/709552/pexels-photo-709552.jpeg?auto=compress&cs=tinysrgb&w=600';
-    const img4 = 'https://images.pexels.com/photos/33041/antelope-canyon-lower-canyon-arizona.jpg?auto=compress&cs=tinysrgb&w=600';
 
-    const [data, setData] = useState([img1, img2, img3, img4]);
+
+    const pics=[
+            img1=require('../../../assests/images/2.png'),
+            img3=require('../../../assests/images/3.png'),
+            img4=require('../../../assests/images/4.png')
+    ]
+    // const img1 = 'https://images.pexels.com/photos/346529/pexels-photo-346529.jpeg?auto=compress&cs=tinysrgb&w=600';
+    // const img2 = 'https://images.pexels.com/photos/147411/italy-mountains-dawn-daybreak-147411.jpeg?auto=compress&cs=tinysrgb&w=600';
+    // const img3 = 'https://images.pexels.com/photos/709552/pexels-photo-709552.jpeg?auto=compress&cs=tinysrgb&w=600';
+    // const img4 = 'https://images.pexels.com/photos/33041/antelope-canyon-lower-canyon-arizona.jpg?auto=compress&cs=tinysrgb&w=600';
+
+    const [data, setData] = useState(pics);
     const [currentIndex, setCurrentIndex] = useState(0);
     const flatListRef = useRef(null);
 
@@ -45,10 +53,10 @@ const CarouselView = () => {
                     ref={flatListRef}
                     data={data}
                     showsHorizontalScrollIndicator={false}
-                    renderItem={({ item }) => (
+                    renderItem={({ item }) => ( 
                         <View style={styles.cardView}>
                             <TouchableOpacity disabled={true}>
-                                <Image style={styles.image} source={{ uri: item }} />
+                                <Image style={styles.image} source={item} />
                             </TouchableOpacity>
                         </View>
                     )}
@@ -94,10 +102,15 @@ const styles = StyleSheet.create({
     cardView: {
         width: wp(91),
         justifyContent: 'center',
+        overflow:'hidden',
+        // borderRadius:Metrics.CountScale(20),
+
     },
     image: {
         width: '100%',
-        height: hp(25),
+        height: hp(23),
+        // borderRadius:Metrics.CountScale(20),
+        overflow:'hidden'
     },
     index: {
         marginVertical: hp(1),

@@ -6,8 +6,7 @@ import { ApiConstants } from '../apis/apiconstant';
 const whiteListedFormDataUrl = [
   ApiConstants.REGISTER,
   ApiConstants.POST_ADMIN_CATEGORIE,
-  ApiConstants.EDIT_ADMIN_CATEGORIEL
-]
+  ApiConstants.EDIT_ADMIN_CATEGORIE]
 //no need for token in black
 const blackListedUrl = [
   ApiConstants.LOGIN,
@@ -26,9 +25,10 @@ apiClient.interceptors.request.use(async (config) => {
     if (userToken && !blackListedUrl.includes(config.url)) {
       config.headers = { ...config.headers, 'x-access-token': userToken }
     }
-    if (config.method === 'post' && whiteListedFormDataUrl.includes(config.url)) {
+    if ((config.method === 'post' || config.method === 'put') && whiteListedFormDataUrl.includes(config.url)) {
       config.headers = { ...config.headers, 'Content-Type': 'multipart/form-data' };
     }
+    
   } catch (error) {
     console.log("axios error", error)
   }

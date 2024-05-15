@@ -7,7 +7,7 @@ import { TouchableOpacity } from 'react-native-gesture-handler'
 import { useSelector } from 'react-redux'
 import { selectedProductData } from '../../../redux/actions/profileaction'
 
-const CatererSubCategoryCard = ({ title, subTitle, price,quantity, counter, enableCounter, handleCounterPress,handleIncrement,handleDecrement, index }) => {
+const CatererSubCategoryCard = ({ title, subTitle,imageUri, price,quantity, counter, enableCounter, handleCounterPress,handleIncrement,handleDecrement, index }) => {
 
     const selectedData=useSelector(state=>state.home)
     // const quantity=selectedData.quantity
@@ -17,7 +17,7 @@ const CatererSubCategoryCard = ({ title, subTitle, price,quantity, counter, enab
     return (
         <>
             <View style={styles.mainScreen}>
-                <Image source={{ uri: image }} style={styles.image} />
+                <Image source={{ uri:imageUri ||image }} style={styles.image} />
                 <View style={styles.textContainer}>
                     <Text style={[styles.titleText]}>{title}</Text>
                     <Text style={[styles.textStyle, styles.addressText]}>{subTitle}</Text>

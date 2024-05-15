@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react'
-import { StyleSheet, View, Text } from 'react-native'
+import { StyleSheet, View, Text, Alert } from 'react-native'
 import CustomButton from '../../../components/atoms/buttoncomponent/button'
 import { MaterialCommunityIcons } from '@expo/vector-icons'
 import colors from '../../../constants/colors'
@@ -40,10 +40,21 @@ const OrderReceipt = () => {
     const enableCard=route?.params?.enable
     const finalOrderData=route?.params?.params?.finalOrderData
 
+    useEffect(()=>{
+        navigation.setOptions({
+            headerTitle: 'Order Details',
+            headerTitleAlign: 'center',
+        })
+    })
+
     const submitUserData=(finalOrderData)=>{
         console.log('start processing==--->')
         dispatch(homeAction.postCustomerData(finalOrderData)).then((data)=>{
-                        console.log("final order data==((>",data)
+            if(data.success){
+                console.log("final order data==((>",data)
+                dispatch(homeAction.handleTotal())
+                Alert.alert('Order Palced Successfully!')
+            }
         })
         .catch((error)=>{
             console.log(error)
@@ -65,38 +76,37 @@ const OrderReceipt = () => {
                 </View>
                 <Text style={styles.billText}>Bill Details</Text>
                 <ItemDetails
-                    titleText={'Noodles total'}
-                    price={210.80}
-                    enableCounter={true}
+                    titleText={'Original Noodles'}
+                    price={8}
+                    // enableCounter={true}
                 />
                 <ItemDetails
-                    titleText={'Rice total'}
-                    price={270.80}
-                    enableCounter={true}
+                    titleText={'House Noodles'}
+                    price={8.2}
                 />
                 <ItemDetails
                     titleText={'Service Charges'}
                     price={1.00}
                 />
-                <ItemDetails
+                {/* <ItemDetails
                     titleText={'Delivery Free'}
                     price={2.50}
-                />
+                /> */}
 
                 <View style={styles.CouponContainer}>
                     <Text style={styles.applyText}>Apply Coupon Code</Text>
                     <Text style={styles.checkText}>CHECK</Text>
                 </View>
                 <View style={styles.line} />
-                <ItemDetails
+                {/* <ItemDetails
                     titleText={'Promo Discount'}
                     price={2.50}
-                />
+                /> */}
                 <View style={styles.line} />
 
                 <ItemDetails
                     titleText={'Sub Total'}
-                    price={547.10}
+                    price={19.2}
                 />
                 <View style={styles.line} />
 
@@ -108,7 +118,7 @@ const OrderReceipt = () => {
 
                 <ItemDetails
                     titleText={'Total'}
-                    price={552.20}
+                    price={24.3}
                     titleTextStyle={styles.totalText}
                     totalPriceStyle={styles.totalText}
                 />

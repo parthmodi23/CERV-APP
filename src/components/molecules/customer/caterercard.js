@@ -30,7 +30,7 @@ const CatererCard = ({ imageUri, title, address,handleCardPress,enablePrice,cust
                                 readonly={enableRating}
                                 // fractions={1}
                                 minValue={0}
-                                startingValue={RatingValue}
+                                startingValue={2.5}
                                 onFinishRating={(rating) => ratingCompleted(rating)}
 
                             />

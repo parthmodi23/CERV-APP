@@ -1,6 +1,7 @@
 import { Alert } from "react-native";
 import { ApiConstants } from "../../apis/apiconstant";
 import { apiClient } from "../../helper/axioshelper";
+import { selectedProductData } from "./order";
 
 
 export const gatCatererData = () => {
@@ -185,6 +186,16 @@ export const addCartProduct = (product) => {
   }
 }
 
+export const handleTotal = (role) => {
+  return {
+    type: 'HANDLETOTAL',
+    payload: {
+      totalPrice:0,
+      orderItem:[],
+      selectedProductData:[]
+    }
+  }
+}
 
 
 export const incrementCounter = (productId,price) => {
@@ -219,6 +230,39 @@ export const postCustomerData = (finalOrderData) => {
       const response = await apiClient.post(ApiConstants.POST_CUSTOMER_DATA,finalOrderData);
       const data = response.data;
       console.log("checkout log", data);
+
+      // if (!data.success) {
+      //   throw new Error(data.message);
+      // }
+
+      // dispatch({
+      //   type: 'POST_CUSTOMER_DATA',
+      //   payload: {
+      //     subCategory: data.data,
+      //   },
+      // });
+
+      return data; // Return the fetched data (optional)
+    } catch (error) {
+      console.log("customer data post error", error.response)
+      if (error.response && error.response.status === 404) {
+        return Promise.reject('Something went wrong! Please try again later.');
+      } else {
+        return Promise.reject(error.response.data.message || 'An error occurred.');
+      }
+    }
+  };
+};
+
+
+export const cancelCustomerOrder = (orderId) => {
+  console.log("cancelorder id data", orderId);
+
+  return async (dispatch) => {
+    try {
+      const response = await apiClient.post(ApiConstants.POST_CANCEL_ORDER,orderId);
+      const data = response.data;
+      console.log("cancel order log", data);
 
       // if (!data.success) {
       //   throw new Error(data.message);

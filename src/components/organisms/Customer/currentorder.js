@@ -6,6 +6,8 @@ import { useNavigation } from '@react-navigation/native'
 import { useDispatch, useSelector } from 'react-redux'
 import { ActivityIndicator } from 'react-native-paper'
 import * as orderAction from '../../../redux/actions/order'
+import * as homeAction from '../../../redux/actions/homeaction'
+import DoctorHomeCard from '../../../screens/patient/Home/DoctorHomeCard'
 const CurrentOrder = () => {
 
   const navigation = useNavigation()
@@ -35,9 +37,25 @@ const CurrentOrder = () => {
 
   console.log(error)
 
-  const handleCardPress=(item)=>{
-    navigation.navigate('currentorderdetails',{
-      item:item
+  const handleCancelButton = (id) => {
+    console.log(id)
+    const orderId = {
+      orderId: id
+    }
+    dispatch(homeAction.cancelCustomerOrder(orderId)).then((data) => {
+      if (data.success) {
+        Alert.alert('Order Cancelled Successfully!')
+      } else {
+        Alert.alert('Something went wrong!', data.message)
+      }
+    })
+      .catch((data) => {
+        Alert.alert("error while cancelling the order", data.message)
+      })
+  }
+  const handleCardPress = (item) => {
+    navigation.navigate('currentorderdetails', {
+      item: item
     })
   }
 
@@ -55,14 +73,14 @@ const CurrentOrder = () => {
   console.log(currentOrderData)
   return (
     <View style={styles.mainScreen}>
-      
+
       <FlatList
         data={currentOrderData}
         keyExtractor={(item) => item.id.toString()}
         renderItem={({ item }) => {
           return (
             <View style={styles.cardContainer}>
-              <Pressable style={{ flex: 1 }} onPress={() =>{handleCardPress(item)}}>
+              <Pressable style={styles.cardInnerStyle} onPress={() => { handleCardPress(item) }}>
                 {item.catererInfo.map((item, index) => (
                   <View style={styles.imageTextContainer}>
                     <View style={styles.imageContainer}>
@@ -91,6 +109,9 @@ const CurrentOrder = () => {
                 />
                 <View style={styles.line} />
                 <View style={styles.orderDetailsText}>
+                  <Text style={styles.orderTypeText}>ORDER STATUS</Text>
+                  <Text style={{ color: item?.status === 'ACCEPTED' ? colors.success : colors.reject }}>{item?.status}</Text>
+
                   <Text style={styles.orderTypeText}>ORDER TYPE</Text>
                   <Text>{item?.order_type}</Text>
                   <Text style={styles.orderTypeText}>ORDER ON</Text>
@@ -100,13 +121,12 @@ const CurrentOrder = () => {
                       <Text style={styles.orderTypeText}>Amount</Text>
                       <Text style={styles.typeSubText}>${item?.total_amount.toFixed(2)}</Text>
                     </View>
-                    <TouchableOpacity style={styles.cancelButtonContainer}>
+                    <TouchableOpacity style={styles.cancelButtonContainer} onPress={() => handleCancelButton(item?.id)}>
                       <Text style={styles.cancelText}>Cancel Order</Text>
                     </TouchableOpacity>
                   </View>
                 </View>
               </Pressable>
-              <View style={styles.newSeperator} />
             </View>
           )
         }}
@@ -123,18 +143,22 @@ const styles = StyleSheet.create({
   },
   cardContainer: {
     flex: 1,
-    paddingHorizontal:Metrics.CountScale(15)
-
+    marginHorizontal: Metrics.CountScale(20),
     // justifyContent: 'center',
     // alignItems: 'center',
+    marginVertical:Metrics.CountScale(10),
+    borderColor: colors.black,
+    elevation:5,
+    backgroundColor:colors.White,
+    borderWidth:Metrics.CountScale(1.5)
   },
   recepiText: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    marginVertical: Metrics.CountScale(7)
+    marginVertical: Metrics.CountScale(5)
   },
   foodListContainer: {
-    marginVertical: Metrics.CountScale(10)
+    marginVertical: Metrics.CountScale(5)
   },
   imageTextContainer: {
     flexDirection: 'row',
@@ -182,7 +206,7 @@ const styles = StyleSheet.create({
   },
   orderTypeText: {
     color: colors.lighttextcolor,
-    marginTop: Metrics.CountScale(10)
+    marginTop: Metrics.CountScale(6)
   },
   cancelButtonContainer: {
     marginHorizontal: Metrics.CountScale(20),
@@ -198,13 +222,16 @@ const styles = StyleSheet.create({
   line: {
     borderTopWidth: Metrics.CountScale(1.5),
     borderTopColor: colors.stronglighttext,
+    // marginVertical: Metrics.CountScale(5)
+  },
+  newSeperator: {
+    borderTopWidth: Metrics.CountScale(1.5),
+    borderTopColor: colors.success,
+    borderTopColor: colors.stronglighttext,
     marginVertical: Metrics.CountScale(5)
   },
-  newSeperator:{
-      borderTopWidth: Metrics.CountScale(1.5),
-      borderTopColor:colors.success,
-      borderTopColor: colors.stronglighttext,
-      marginVertical: Metrics.CountScale(5)
+  cardInnerStyle:{
+    paddingHorizontal:Metrics.CountScale(10)
   }
 
 })

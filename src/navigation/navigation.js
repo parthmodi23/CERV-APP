@@ -83,6 +83,7 @@ import DoctorList from '../screens/patient/Home/DoctorList';
 import BookSlot from '../screens/patient/Home/BookSlot';
 import OrderReceipt from '../components/organisms/Customer/orderrecipt';
 import CurrentOrderDetails from '../components/organisms/Customer/currentorderdetails';
+import OnboardingScreen from '../components/organisms/auth/onbording';
 // import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 
 
@@ -357,8 +358,9 @@ const AuthNavigator = () => {
 //auth stack
 const MainNavigator = () => {
   return (
-    <Stack.Navigator initialRouteName='authflow'>
+    <Stack.Navigator initialRouteName='onbording'>
       <Stack.Screen name='authflow' component={AuthNavigator} options={{ headerShown: false }} />
+      <Stack.Screen name='onbording' component={OnboardingScreen} options={{ headerShown: false }} />
       <Stack.Screen name='catererhome' component={Catererhome} options={{ headerShown: false }} />
       <Stack.Screen name='customerhome' component={CustomerStack} options={{ headerShown: false }} />
     </Stack.Navigator>

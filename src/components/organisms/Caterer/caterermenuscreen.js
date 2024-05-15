@@ -14,12 +14,13 @@ const CatererMenuScreen = (props) => {
 
   const [isModelVisible, setModelVisible] = useState(false)
   const [isRefreshing, setIsRefresing] = useState(false)
+  const [isLoader, setIsLoader] = useState(false)
   const [error, setError] = useState()
   const [deletePrdouctId, setDeleteProductId] = useState(null)
   const [catererCategoriData, setCatererCategoriData] = useState()
   const dispatch = useDispatch()
 
-  useEffect((itemId) => {
+  useEffect(() => {
     navigation.setOptions({
       headerTitle: 'Menu',
       headerTitleAlign: 'center',
@@ -29,7 +30,14 @@ const CatererMenuScreen = (props) => {
         style={{ marginLeft: wp(5) }}
       />
     });
+    setIsLoader(true);
+    fetchData()
+  }, [fetchData]);
+
+
+  const fetchData=()=>{
     setIsRefresing(true);
+  
     dispatch(menuAction.getAdminCategories())
       .then((data) => {
         setError(false);
@@ -43,9 +51,10 @@ const CatererMenuScreen = (props) => {
         Alert.alert(err);
       })
       .finally(() => {
+        setIsLoader(false)
         setIsRefresing(false); // Set isRefreshing to false after the action completes
       });
-  }, []);
+  }
 
   const catererData = useSelector(state => state?.menu)
   console.log("caterer categories data", catererData)
@@ -93,9 +102,11 @@ const CatererMenuScreen = (props) => {
     navigation.navigate('editcategory')
   }
 
-  const editCategory = (id) => {
+  const editCategory = (id,name,image) => {
     navigation.navigate('editcategory', {
-      id: id
+      id: id,
+      name:name,
+      image:image
     })
   }
 
@@ -104,6 +115,7 @@ const CatererMenuScreen = (props) => {
       <ActivityIndicator size="large" color='black' />
     </View>)
   }
+
   if (catererCategoriData?.length === 0 || null) {
     return (<View style={styles.indicator}>
       <Text>Please add some Categories!</Text>
@@ -113,6 +125,8 @@ const CatererMenuScreen = (props) => {
     <View style={styles.mainScreen}>
       <FlatList
         data={catererCategoriData || catererRacepiData}
+        onRefresh={fetchData}
+        refreshing={isLoader}
         keyExtractor={(item) => { item.id }}
         renderItem={({ item }) => {
           return <View style={styles.MenuCardContainer}>
@@ -123,7 +137,7 @@ const CatererMenuScreen = (props) => {
               imageUri={item.image}
               onPress={() => handleOnPress(item.id)}
               onPressCancel={() => handleDeleteButton(item.id)}
-              onPressPass={() => editCategory(item.id)}
+              onPressPass={() => editCategory(item.id,item.name,item.image)}
             />
           </View>
         }}
@@ -145,7 +159,7 @@ const CatererMenuScreen = (props) => {
 
 const styles = StyleSheet.create({
   mainScreen: {
-    flex: 1,
+    // flex: 1,
     padding: Metrics.CountScale(5),
   },
   MenuCardContainer: {
@@ -158,16 +172,16 @@ const styles = StyleSheet.create({
     alignItems: 'center'
   },
   plusContainer: {
-    flex: 1,
-    justifyContent: 'flex-end',
-    alignItems: 'flex-end',
-    margin: Metrics.CountScale(25),
-    backgroundColor: 'green'
+    // justifyContent: 'flex-end',
+    position:'absolute',
+    margin:Metrics.CountScale(10),
+    bottom:0,
+    right:0
 
   },
   plusIcon: {
     backgroundColor: colors.CERVmaincolor,
-    padding: Metrics.CountScale(20),
+    padding: Metrics.CountScale(10),
     borderRadius: Metrics.CountScale(30),
   }
 })

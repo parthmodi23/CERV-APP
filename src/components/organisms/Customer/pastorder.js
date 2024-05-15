@@ -59,7 +59,7 @@ const PastOrder = () => {
         keyExtractor={(item) => item.id}
         renderItem={({ item }) => {
           return (
-            <View>
+            <View style={styles.container}>
               {item.catererInfo.map((item, index) => (
                 <View style={styles.imageTextContainer} key={item.id}>
                   <View style={styles.imageContainer}>
@@ -94,8 +94,8 @@ const PastOrder = () => {
                 <Text style={styles.orderTypeText}>Amount</Text>
                 <Text style={styles.typeSubText}>${item.subtotal.toFixed(2)}</Text>
                 <View style={styles.completedText}>
-                  <Entypo name='dot-single' size={30} color={item?.status === 'CANCELLED' ? 'red' : 'green'} />
-                  <Text style={[styles.orderCompleteText, { color: item?.status === 'CANCELLED' ? 'red' : 'green' }]}>{item?.status}</Text>
+                  <Entypo name='dot-single' size={30} color={item?.status === 'REJECTED' || 'CANCELLED' ? 'red' : 'green'} />
+                  <Text style={[styles.orderCompleteText, { color: item?.status === 'REJECTED' || 'CANCELLED' ? 'red' : 'green' }]}>{item?.status}</Text>
                 </View>
               </View>
               <View style={styles.line} />
@@ -138,10 +138,22 @@ const styles = StyleSheet.create({
   recepiText: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    marginVertical: Metrics.CountScale(7)
+    // marginVertical: Metrics.CountScale(7)
   },
   imageTextContainer: {
     flexDirection: 'row',
+  },
+  container:{
+    flex: 1,
+    marginHorizontal: Metrics.CountScale(20),
+    // justifyContent: 'center',
+    // alignItems: 'center',
+    marginVertical:Metrics.CountScale(10),
+    borderColor: colors.black,
+    elevation:5,
+    backgroundColor:colors.White,
+    borderWidth:Metrics.CountScale(1.5),
+    paddingHorizontal:Metrics.CountScale(10)
   },
   image: {
     width: '100%',

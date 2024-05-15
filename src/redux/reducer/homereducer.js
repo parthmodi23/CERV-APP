@@ -1,3 +1,5 @@
+import { selectedProductData } from "../actions/order";
+
 const initialState = {
     catererData: null,
     singleCaterer: null,
@@ -87,6 +89,13 @@ export default (state = initialState, action) => {
                 ...state,
                 orderItem: [...state.orderItem, action.payload.orderItem]
             };
+        case 'HANDLETOTAL':
+            return{
+                ...state,
+                orderItem:action.payload.orderItem,
+                totalPrice: action.payload.totalPrice,
+                selectedProductData:action.payload.selectedProductData
+            }
 
         default:
             return state;

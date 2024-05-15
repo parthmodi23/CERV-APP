@@ -7,7 +7,7 @@ import { MaterialBottomTabView } from '@react-navigation/material-bottom-tabs'
 import colors from '../../../constants/colors'
 import { useDispatch, useSelector } from 'react-redux'
 import * as orderAction from '../../../redux/actions/order'
-import { useRoute } from '@react-navigation/native'
+import { useNavigation, useRoute } from '@react-navigation/native'
 
 
 
@@ -53,12 +53,16 @@ const CurrentOrderDetails = () => {
     const [isRefreshing, setIsRefresing] = useState(true)
     const [error, setError] = useState(false)
     const route = useRoute()
+    const navigation=useNavigation()
     const currentOrderDetails = route?.params?.item
     const currentOrderData = route?.params?.item
     console.log("my from screen data", currentOrderData)
     const dispatch = useDispatch()
 
     useEffect(() => {
+        navigation.setOptions({
+            title:'Details  '
+        })
         setIsRefresing(true);
         dispatch(orderAction.getCurrentOrderData())
             .then((data) => {
@@ -183,7 +187,7 @@ const CurrentOrderDetails = () => {
 
                 <ItemDetails
                     titleText={'Sub Total'}
-                    price={currentOrderData?.total_amount.toFixed(2)}
+                    price={currentOrderData?.subtotal.toFixed(2)}
                 />
                 <View style={styles.line} />
 
@@ -195,7 +199,7 @@ const CurrentOrderDetails = () => {
 
                 <ItemDetails
                     titleText={'Total'}
-                    price={currentOrderData?.subtotal?.toFixed(2)}
+                    price={currentOrderData?.total_amount?.toFixed(2)}
                     titleTextStyle={styles.totalText}
                     totalPriceStyle={styles.totalText}
                 />

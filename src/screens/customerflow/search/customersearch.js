@@ -5,6 +5,7 @@ import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-nat
 import { MaterialCommunityIcons, SimpleLineIcons, MaterialIcons } from '@expo/vector-icons'
 import colors from '../../../constants/colors';
 import RecipeList from '../../../components/organisms/Customer/recipelist';
+import Metrics from '../../../assests/Metrics';
 const CustomerSearch = () => {
 
 
@@ -34,6 +35,8 @@ const styles = StyleSheet.create({
     margin: wp(3)
   },
   icon: {
+    marginLeft: Metrics.CountScale(20),
+    marginTop: Metrics.CountScale(5),
   }
 })
 
